@@ -35,26 +35,27 @@ The user will interact with the program primarily through the keyboard and text 
 
 After the user enters the command 'fd 50' into the text entry field, the submitCommand(String line, Turtle turtle) method from the Parser class is called, where line is the string 'fd 50' and turtle is the turtle object. The parser then adds this information to its queue, where it creates a command object MoveForward with the parameter 50. The addCommand method from the Turtle class is called, which adds the command object to the turtle's queue. The turtle then processes this command to effectively move forward and update its current state on a frame-by-frame basis.
 
+```java
 public class Turtle(){
 
-public postCommand(Command command){};
+  public postCommand(Command command){};
 
 }
 
 public class Parser(){
 
-public submitCommand(String line, Turtle turtle){};
+  public submitCommand(String line, Turtle turtle){};
 
 }
 
 
 public static Main(){
 
-submitCommand("fd 50", turtle);
-postCommand(MoveForward(turtle, 50));
+  submitCommand("fd 50", turtle);
+  postCommand(MoveForward(turtle, 50));
 
 }
-
+```
 ##Design Considerations##
 
 ##Team Responsibilities##
