@@ -1,0 +1,19 @@
+drawable API specs
+
+
+
+interface Drawable {
+	showObj();
+	hideObj();
+	forward();
+	back();
+	left();
+	right();
+	setHeading();
+	towards();
+	setXY();
+	penUp();
+	penDown();
+	Home();
+	clearScreen();
+}
