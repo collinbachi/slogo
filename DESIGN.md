@@ -58,3 +58,7 @@ postCommand(MoveForward(turtle, 50));
 ##Design Considerations##
 
 ##Team Responsibilities##
+
+Jack is handling the front-end, including the model for the turtle and the view panes.
+
+Randy, Collin and Matt will handle the back-end, including the parser and the library.
