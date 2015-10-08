@@ -6,3 +6,12 @@ Since I'm working on the parser, I need to be prepared for syntax and lexical er
 
 Our API design minimizes the knowledge that the back-end and front-end teams need to know about each other's implementation details. It is flexible and supports a variety of possible extensions.
 
+Use cases:
+1 - Accept syntactically correct user input to move the turtle forward "fd 50"
+2 - Throw and error when an unknown command is referenced "spin 20"
+3 - Allow the user to define a custom routine
+4 - Pass a list of sequential tokens to the parser
+
+I am most excited to work on building and collapsing/excecuting the parse tree.
+
+I am not particularly worried about any features since we sat down at our last group meeting and figured out (at a high level) how we would implement everything. 
