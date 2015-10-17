@@ -67,5 +67,5 @@ public interface Drawable {
 
 	void addAnimationToQueue();
 
-	void runCommand(ParserCommand cmd);
+	double runCommand(ParserCommand cmd);
 }

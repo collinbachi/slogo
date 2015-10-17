@@ -69,7 +69,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		return myDrawable.getShowing();
 	}
 
-	public void postCommand(ParserCommand cmd) {
+	public double postCommand(ParserCommand cmd) {
 		myDrawable.runCommand(cmd);
 	}
 

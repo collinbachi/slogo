@@ -21,6 +21,6 @@ public interface ParserClient {
 
 	Boolean getShowing();
 
-	void postCommand(ParserCommand cmd);
+	double postCommand(ParserCommand cmd);
 
 }

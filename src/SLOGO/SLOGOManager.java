@@ -21,6 +21,8 @@ public class SLOGOManager {
 	//The SLOGOManager class will also contain a setScreen method which 
 	//one can use to change the current screen.
 	public String TITLE;
+
+	private Group myRoot;
 	
 	private SLOGOSection mySection; // Holds the different "sections" of the application. Currently there is just the library/text_input/drawing board section.
 	private Scene myScene;
@@ -30,12 +32,11 @@ public class SLOGOManager {
 	
 	public Scene init(Stage stage, int width, int height){
 
+		myRoot = new Group();	
+		this.myScene = new Scene(myRoot,width,height,Color.WHITE);
 		
 		this.myStage = stage;
 		this.mySection = new ParseAndDrawSection(this);
-
-		Group root = mySection.getRoot();	
-		this.myScene = new Scene(root,width,height,Color.WHITE);
 
 		TITLE = mySection.getTitle();
 
@@ -47,6 +48,10 @@ public class SLOGOManager {
 	
 	public Stage getStage(){
 		return this.myStage;
+	}
+
+	public void addToRoot(Node node) {
+		myRoot.getChildren().add(node);
 	}
 	
 	public void setAnimation(Timeline animation){

@@ -27,11 +27,12 @@ public abstract class SLOGOSection {
 	
 	public SLOGOSection(SLOGOManager manager){
 		myView = new ConcreteView();
-		this.myManager = manager;
+		myManager = manager;
+		myManager.addToRoot(getViewRoot());
 		myApplicationView = null;
 	}
 
-	public Group getRoot () {
+	public Group getViewRoot () {
 		return myView.getRoot();
 	}
 
