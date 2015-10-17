@@ -1,18 +1,11 @@
 package Client;
 
-import java.util.ResourceBundle;
 
 import SLOGO.SLOGOManager;
 import View.ApplicationView;
 import View.ConcreteView;
 import View.View;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
 public abstract class SLOGOSection {

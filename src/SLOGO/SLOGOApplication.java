@@ -1,7 +1,6 @@
 package SLOGO;
 
 
-import java.util.ResourceBundle;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

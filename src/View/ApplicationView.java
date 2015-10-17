@@ -13,14 +13,6 @@ public interface ApplicationView {
 
 	String getTitle();
 	
-	void setImageViewPosition(ImageView imageView, double x, double y);
-	
-	// Initialize ImageView
-	ImageView initImageView(Image image, double x, double y);
-	
-	// Get an Image
-	Image getImage(String imageName);
-	
 	// Initialize Button
 	Button initButton(String name, Image image, double x, double y);
 	

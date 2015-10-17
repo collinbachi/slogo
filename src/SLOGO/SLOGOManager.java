@@ -1,12 +1,10 @@
 package SLOGO;
 
-import java.util.ResourceBundle;
 
 import Client.ParseAndDrawSection;
 import Client.SLOGOSection;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;

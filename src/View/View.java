@@ -2,22 +2,12 @@ package View;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public interface View {
 	
 	// The base functions every view object implements
-
-	// These four functions handle the transforms between numbered entered and coordinates displayed onscreen.
-
-	double X(double x);
-
-	double Y(double y);
-
-	double W(double w);
-
-	double H(double h);
-
-
 
 	Group getRoot();
 
@@ -30,5 +20,13 @@ public interface View {
 	int removeFromRootInt(Node node);
 	
 	void clearRoot();
+	
+	void setImageViewPosition(ImageView imageView, double x, double y);
+	
+	// Initialize ImageView
+	ImageView initImageView(Image image, double x, double y);
+	
+	// Get an Image
+	Image getImage(String imageName);
 
 }

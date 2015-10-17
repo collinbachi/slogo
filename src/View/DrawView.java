@@ -1,6 +1,7 @@
 package View;
 
-import Drawable.DrawCommand;
+import Drawable.DrawCommand.DrawCommand;
+import Drawable.DrawCommand.DrawRequest;
 
 public interface DrawView {
 
@@ -16,6 +17,16 @@ public interface DrawView {
 
 	void drawClear();
 
+	double getX();
+
+	double getY();
+
+	double getHeading();
+
 	void executeCommand(DrawCommand cmd);
+
+	double executeRequest(DrawRequest cmd);
+	
+	void initObject(String filename, double x, double y, double orientation);
 	
 }

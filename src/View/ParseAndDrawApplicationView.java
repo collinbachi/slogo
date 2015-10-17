@@ -11,20 +11,28 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.image.Image;
 
 
 public class ParseAndDrawApplicationView extends ConcreteView implements ApplicationView {
 
+	private Rectangle applicationArea;
+	private static final double APP_X = 0;
+	private static final double APP_Y = 100;
+	private static final double APP_W = 35;
+	private static final double APP_H = 100;
+	private static final Color APP_COLOR = Color.LIGHTGRAY;
+
 	private TextArea parserText;
-	private static final double TBOX_X = 25;
-	private static final double TBOX_Y = 75;
+	private static final double TBOX_X = 5;
+	private static final double TBOX_Y = 95;
 	private static final double TBOX_W = 25;
-	private static final double TBOX_H = 50;
+	private static final double TBOX_H = 65;
 
 	private Button evaluate;
-	private static final double EVAL_X = 35;
-	private static final double EVAL_Y = 10;
+	private static final double EVAL_X = 22;
+	private static final double EVAL_Y = 13;
 
 	private HBox penSelect;
 
@@ -51,6 +59,14 @@ public class ParseAndDrawApplicationView extends ConcreteView implements Applica
 
 	public void makeButtonsAndText() {
 
+		this.applicationArea = new Rectangle();
+		applicationArea.setX(X(APP_X));
+		applicationArea.setY(Y(APP_Y));
+		applicationArea.setWidth(W(APP_W));
+		applicationArea.setHeight(H(APP_H));
+		applicationArea.setFill(APP_COLOR);
+		myRoot.getChildren().add(applicationArea);
+
 		this.parserText = new TextArea();
 		parserText.setLayoutX(X(TBOX_X));
 		parserText.setLayoutY(Y(TBOX_Y));
@@ -59,8 +75,8 @@ public class ParseAndDrawApplicationView extends ConcreteView implements Applica
 		myRoot.getChildren().add(parserText);
 
 		this.evaluate = initButton(EVALUATE, X(EVAL_X), Y(EVAL_Y));	
-		System.out.println(X(TBOX_X));
-		System.out.println(Y(TBOX_Y));
+		System.out.println(X(APP_X));
+		System.out.println(Y(APP_Y));
 		evaluate.setOnAction(e->handleButtonEvaluate());	
 		myRoot.getChildren().add(evaluate);
 	}
@@ -75,21 +91,6 @@ public class ParseAndDrawApplicationView extends ConcreteView implements Applica
 
 	public String getTitle() {
 		return TITLE;
-	}
-	
-	public void setImageViewPosition(ImageView imageView, double x, double y){
-		imageView.setX(x);
-		imageView.setY(y);
-	}
-
-	public ImageView initImageView(Image image, double x, double y){
-		ImageView result = new ImageView(image);
-		setImageViewPosition(result,x,y);
-		return result;
-	}
-
-	public Image getImage(String imageName){
-		return new Image(SLOGOSection.class.getClassLoader().getResourceAsStream(imageName));
 	}
 
 	public Button initButton(String name, Image image, double x, double y){

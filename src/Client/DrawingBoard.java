@@ -1,6 +1,7 @@
 package Client;
 
-import Drawable.DrawCommand;
+import Drawable.DrawCommand.DrawCommand;
+import Drawable.DrawCommand.DrawRequest;
 
 public interface DrawingBoard {
 	
@@ -8,4 +9,8 @@ public interface DrawingBoard {
 	// this is how the Drawable interacts with the manager.
 
 	void drawCommand(DrawCommand cmd);
+
+	double drawRequest(DrawRequest cmd);
+
+	void handleDrawError(String error);
 }

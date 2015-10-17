@@ -9,29 +9,29 @@ public interface Drawable {
 
 	// NOTE -- right now, we assume a heading of 0 points directly upwards, going clockwise up to 360.
 
-	void showObj();
+	double setShowing(Boolean state);
 
-	void hideObj();
+	double setForward(double amt);
 	
-	void setForward(double amt);
+	double setBack(double amt);
 	
-	void setBack(double amt);
+	double setLeft(double degrees);
 	
-	void setLeft(double degrees);
+	double setRight(double degrees);
 	
-	void setRight(double degrees);
+	double setHeading(double degrees);
 	
-	void setHeading(double degrees);
-	
-	void setTowards(double x, double y);
+	double setTowards(double x, double y);
 
-	void setPenUp();
+	double setXY(double x, double y);
+
+	double setPen(Boolean state);
+		
+	double setToHome();
 	
-	void setPenDown();
-	
-	void setToHome();
-	
-	void setClearScreen();
+	double setClearScreen();
+
+	void drawShowing(Boolean state);
 
 	void drawForward(double amt);
 	
@@ -47,9 +47,7 @@ public interface Drawable {
 	
 	void drawXY(double x, double y);
 
-	void drawPenUp();
-	
-	void drawPenDown();
+	void drawPen(Boolean state);
 	
 	void drawToHome();
 	
@@ -65,7 +63,9 @@ public interface Drawable {
 
 	Boolean getShowing();
 
-	void addAnimationToQueue();
+	void addAnimationToQueue(ParserCommand cmd);
 
 	double runCommand(ParserCommand cmd);
+
+	void animate();
 }

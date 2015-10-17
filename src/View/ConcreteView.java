@@ -1,9 +1,12 @@
 package View;
 
+import Client.SLOGOSection;
 import SLOGO.SLOGOApplication;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class ConcreteView implements View {
 	
@@ -12,24 +15,28 @@ public class ConcreteView implements View {
 	public ConcreteView () {
 		this.myRoot = new Group();
 	}
+	
+	// These four functions handle the transforms between numbered entered and coordinates displayed onscreen.
 
-	// View functions
 
-	public double X(double x) {
+	protected double X(double x) {
 		return SLOGOApplication.W_UNIT * x;
 	}
 
-	public double Y(double y) {
+	protected double Y(double y) {
 		return SLOGOApplication.H_UNIT *((SLOGOApplication.HEIGHT / SLOGOApplication.H_UNIT) - y);
 	}
 
-	public double W(double w) {
+	protected double W(double w) {
 		return X(w);
 	}
 
-	public double H(double h) {
+	protected double H(double h) {
 		return X(h);
 	}
+	
+	// View functions
+
 
 	public Group getRoot() {
 		return myRoot;
@@ -56,6 +63,21 @@ public class ConcreteView implements View {
 	
 	public void clearRoot(){
 		this.myRoot.getChildren().clear();
+	}
+	
+	public void setImageViewPosition(ImageView imageView, double x, double y){
+		imageView.setX(x);
+		imageView.setY(y);
+	}
+
+	public ImageView initImageView(Image image, double x, double y){
+		ImageView result = new ImageView(image);
+		setImageViewPosition(result,x,y);
+		return result;
+	}
+
+	public Image getImage(String imageName){
+		return new Image(SLOGOSection.class.getClassLoader().getResourceAsStream(imageName));
 	}
 
 }

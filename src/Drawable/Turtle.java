@@ -1,202 +1,245 @@
 package Drawable;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 import Client.DrawingBoard;
+import Drawable.DrawCommand.*;
 import Parser.ParserCommand;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Turtle implements Drawable {
 	
 	private DrawingBoard myBoard;
+	
+	private Queue<ParserCommand> myCommands;
 
 	double myX;
 	double myY;
 	double myHeading;
 	Boolean myPenUp;
 	Boolean myShowing;
+	
+	private static final String mySpriteFileName = "turtle.jpg";
+	private static final double myMoveSpeed = 50;
+	private static final double myTurnSpeed = 30;
 
 	public Turtle (DrawingBoard board) {
+		myCommands = new ArrayDeque<>();
 		myBoard = board;
 		myX = 0;
 		myY = 0;
 		myHeading = 90;
+		myShowing = true;
+		myPenUp = false;
+		
+		DrawCommand start = new DrawCommandInitObject(mySpriteFileName, myX, myY, myHeading);
+		myBoard.drawCommand(start);
+		
+		//For testing
+		
 	}
 
+	// Core functions
+
+	public void animate() {
+		while (myCommands.size() != 0) {
+			ParserCommand cmd = myCommands.poll();
+			cmd.draw(this);
+		}
+	}
+
+	// Drawable functions
+
 	@Override
-	public void showObj() {
-		// TODO Auto-generated method stub
+	public double setShowing(Boolean state) {
+		myShowing = state;
+		if (state) {
+			return 1;
+		}
+		return 0;
 		
 	}
 
 	@Override
-	public void hideObj() {
-		// TODO Auto-generated method stub
-		
+	public double setForward(double amt) {
+		myX += Math.cos(Math.toRadians(myHeading)) * amt;
+		myY += Math.sin(Math.toRadians(myHeading)) * amt;
+		return amt;
 	}
 
 	@Override
-	public void setForward(double amt) {
-		// TODO Auto-generated method stub
-		
+	public double setBack(double amt) {
+		return setForward(-1 * amt);	
 	}
 
 	@Override
-	public void setBack(double amt) {
-		// TODO Auto-generated method stub
-		
+	public double setLeft(double degrees) {
+		myHeading -= degrees;
+		return degrees;	
 	}
 
 	@Override
-	public void setLeft(double degrees) {
-		// TODO Auto-generated method stub
-		
+	public double setRight(double degrees) {
+		return setLeft( -1 * degrees);
 	}
 
 	@Override
-	public void setRight(double degrees) {
-		// TODO Auto-generated method stub
-		
+	public double setHeading(double degrees) {
+		myHeading = degrees;
+		return degrees;
 	}
 
 	@Override
-	public void setHeading(double degrees) {
-		// TODO Auto-generated method stub
-		
+	public double setTowards(double x, double y) {
+		// TODO DO LATER!
+		return 0;
+	}
+	
+	@Override
+	public double setXY(double x, double y) {
+		double distance = Math.sqrt(Math.pow(myX - x, 2) + Math.pow(myY - y, 2));
+		myX = x;
+		myY = y;
+		return distance;
 	}
 
 	@Override
-	public void setTowards(double x, double y) {
-		// TODO Auto-generated method stub
-		
+	public double setPen(Boolean state) {
+		myPenUp = state;
+		if (state) {
+			return 1;
+		}
+		return 0;
 	}
 
 	@Override
-	public void setPenUp() {
-		// TODO Auto-generated method stub
-		
+	public double setToHome() {
+		return setXY(0,0);
 	}
 
 	@Override
-	public void setPenDown() {
-		// TODO Auto-generated method stub
-		
+	public double setClearScreen() {
+		return setXY(0,0);
 	}
 
 	@Override
-	public void setToHome() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setClearScreen() {
-		// TODO Auto-generated method stub
-		
+	public void drawShowing(Boolean state) {
+		DrawCommand cmd = new DrawCommandDrawShowing(state);
+		myBoard.drawCommand(cmd);
 	}
 
 	@Override
 	public void drawForward(double amt) {
-		// TODO Auto-generated method stub
+		DrawRequest cmdx = new DrawCommandGetX();
+		double x = myBoard.drawRequest(cmdx);
 		
+		DrawRequest cmdy = new DrawCommandGetY();
+		double y = myBoard.drawRequest(cmdy);
+		
+		DrawRequest cmdh = new DrawCommandGetHeading();
+		double h = myBoard.drawRequest(cmdh);
+		
+		double newX = x + Math.cos(Math.toRadians(h))*amt;
+		double newY = y + Math.sin(Math.toRadians(h))*amt;
+		
+		DrawCommand cmd = new DrawCommandDrawMove(newX, newY, myMoveSpeed);
+		myBoard.drawCommand(cmd);
 	}
 
 	@Override
 	public void drawBack(double amt) {
-		// TODO Auto-generated method stub
-		
+		drawForward(-1 * amt);
 	}
 
 	@Override
 	public void drawLeft(double degrees) {
-		// TODO Auto-generated method stub
+		DrawRequest cmdh = new DrawCommandGetHeading();
+		double h = myBoard.drawRequest(cmdh);
 		
+		double newHeading = h - degrees;
+		
+		DrawCommand cmd = new DrawCommandDrawTurn(newHeading, myTurnSpeed);
+		myBoard.drawCommand(cmd);
 	}
 
 	@Override
 	public void drawRight(double degrees) {
-		// TODO Auto-generated method stub
-		
+		drawLeft(-1 * degrees);
 	}
 
 	@Override
 	public void drawHeading(double degrees) {
-		// TODO Auto-generated method stub
-		
+		DrawCommand cmd = new DrawCommandDrawTurn(degrees, myTurnSpeed);
+		myBoard.drawCommand(cmd);
 	}
 
 	@Override
 	public void drawTowards(double x, double y) {
-		// TODO Auto-generated method stub
+		// TODO DO LATER!
 		
 	}
 
 	@Override
 	public void drawXY(double x, double y) {
-		// TODO Auto-generated method stub
-		
+		DrawCommand cmd = new DrawCommandDrawMove(x, y, myMoveSpeed);
+		myBoard.drawCommand(cmd);
 	}
 
 	@Override
-	public void drawPenUp() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void drawPenDown() {
-		// TODO Auto-generated method stub
-		
+	public void drawPen(Boolean state) {
+		DrawCommand cmd = new DrawCommandDrawPen(state);
+		myBoard.drawCommand(cmd);
 	}
 
 	@Override
 	public void drawToHome() {
-		// TODO Auto-generated method stub
-		
+		DrawCommand cmd = new DrawCommandDrawMove(0, 0, myMoveSpeed);
+		myBoard.drawCommand(cmd);
 	}
 
 	@Override
 	public void drawClearScreen() {
-		// TODO Auto-generated method stub
-		
+		DrawCommand cmdm = new DrawCommandDrawMove(0, 0, myMoveSpeed);
+		myBoard.drawCommand(cmdm);
+		DrawCommand cmdc = new DrawCommandDrawClear();
+		myBoard.drawCommand(cmdc);
 	}
 
 	@Override
 	public double getX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return myX;
 	}
 
 	@Override
 	public double getY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return myY;
 	}
 
 	@Override
 	public double getHeading() {
-		// TODO Auto-generated method stub
-		return 0;
+		return myHeading;
 	}
 
 	@Override
 	public Boolean getPenUp() {
-		// TODO Auto-generated method stub
-		return null;
+		return myPenUp;
 	}
 
 	@Override
 	public Boolean getShowing() {
-		// TODO Auto-generated method stub
-		return null;
+		return myShowing;
 	}
 
 	@Override
-	public void addAnimationToQueue() {
-		// TODO Auto-generated method stub
-		
+	public void addAnimationToQueue(ParserCommand cmd) {
+		myCommands.add(cmd);
 	}
 
 	@Override
-	public void runCommand(ParserCommand cmd) {
-		// TODO Auto-generated method stub
-		
+	public double runCommand(ParserCommand cmd) {
+		addAnimationToQueue(cmd);
+		return cmd.set(this);
 	}
 }

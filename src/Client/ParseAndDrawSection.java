@@ -1,8 +1,9 @@
 package Client;
 
-import Drawable.DrawCommand;
 import Drawable.Drawable;
 import Drawable.Turtle;
+import Drawable.DrawCommand.DrawCommand;
+import Drawable.DrawCommand.DrawRequest;
 import Parser.ParserCommand;
 import SLOGO.SLOGOManager;
 import View.ApplicationView;
@@ -28,14 +29,16 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 
 	public ParseAndDrawSection (SLOGOManager manager) {
 		super(manager);
-		myDrawable = new Turtle(this);
-		//myParser = new SLOGOScanner(this); // ?
 
 		// NOTE -- DrawView currently refers to the same object
 		// However, the class is constructed in this way so that if the view becomes too complicated
 		// And needs to be split up into different classes, the application won't need to be rewritten		
-		myApplicationView = new ParseAndDrawApplicationView(myView, this);
 		myDrawView = new ParseAndDrawDrawView(myView, this);
+		myApplicationView = new ParseAndDrawApplicationView(myView, this);
+		
+		//myParser = new SLOGOScanner(this); // ?
+		
+		myDrawable = new Turtle(this);
 
 	}
 
@@ -70,13 +73,21 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 	}
 
 	public double postCommand(ParserCommand cmd) {
-		myDrawable.runCommand(cmd);
+		return myDrawable.runCommand(cmd);
 	}
 
 	// DrawingBoard functions
 
+	public void handleDrawError(String error) {
+		return;
+	}
+
 	public void drawCommand(DrawCommand cmd) {
 		myDrawView.executeCommand(cmd);
+	}
+
+	public double drawRequest(DrawRequest cmd) {
+		return myDrawView.executeRequest(cmd);
 	}
 
 	// SLOGOSection functions 

@@ -1,4 +1,4 @@
-package Drawable;
+package Drawable.DrawCommand;
 
 import View.DrawView;
 
