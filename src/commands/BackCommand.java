@@ -3,17 +3,16 @@ package commands;
 import drawable.Drawable;
 
 public class BackCommand implements Command {
-	private int distance;
+	private double distance;
 	
-	public BackCommand(int distance){
+	public BackCommand(double distance){
 		this.distance = distance;
 	}
 
 	@Override
-	public void execute(Drawable object) {
+	public double execute(Drawable object) {
 		// TODO Auto-generated method stub
 //		object.back(distance);
-
+		return distance;
 	}
-
 }

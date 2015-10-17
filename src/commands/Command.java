@@ -4,6 +4,5 @@ import drawable.Drawable;
 
 public interface Command {
 	
-	public void execute(Drawable object);
-	
+	public double execute(Drawable object);
 }
