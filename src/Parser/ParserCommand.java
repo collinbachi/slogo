@@ -1,6 +1,6 @@
-package SLOGO;
+package Parser;
 
-
+import Drawable.Drawable;
 
 public interface ParserCommand {
 

@@ -1,10 +1,13 @@
-package SLOGO;
+package Drawable;
+
+import Parser.ParserCommand;
 
 public interface Drawable {
 
 	// The drawable object (turtle to start) implements this.
 	// The client has an object of type Drawable that it passes commands from the parser to.
 
+	// NOTE -- right now, we assume a heading of 0 points directly upwards, going clockwise up to 360.
 
 	void showObj();
 
@@ -63,4 +66,6 @@ public interface Drawable {
 	Boolean getShowing();
 
 	void addAnimationToQueue();
+
+	void runCommand(ParserCommand cmd);
 }

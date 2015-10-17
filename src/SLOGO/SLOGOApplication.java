@@ -13,8 +13,10 @@ import javafx.util.Duration;
 public class SLOGOApplication extends Application {
 
 	
-	public static final int WIDTH = 700;
+	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 800;
+	public static final double W_UNIT = WIDTH / 100;
+	public static final double H_UNIT = HEIGHT / 100;
     public static final double SECOND_DELAY = 1.0;
     private SLOGOManager mySLOGOManager;
     

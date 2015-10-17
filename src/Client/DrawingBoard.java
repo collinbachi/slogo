@@ -1,5 +1,6 @@
-package SLOGO;
+package Client;
 
+import Drawable.DrawCommand;
 
 public interface DrawingBoard {
 	

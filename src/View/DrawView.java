@@ -1,6 +1,6 @@
-package SLOGO;
+package View;
 
-
+import Drawable.DrawCommand;
 
 public interface DrawView {
 
@@ -15,5 +15,7 @@ public interface DrawView {
 	void drawShowing(Boolean state);
 
 	void drawClear();
+
+	void executeCommand(DrawCommand cmd);
 	
 }

@@ -1,4 +1,6 @@
-package SLOGO;
+package Drawable;
+
+import View.DrawView;
 
 public interface DrawCommand {
 

@@ -2,6 +2,8 @@ package SLOGO;
 
 import java.util.ResourceBundle;
 
+import Client.ParseAndDrawSection;
+import Client.SLOGOSection;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -18,23 +20,25 @@ public class SLOGOManager {
 	//The SLOGOManager class contains the references to the the Scene, Group, and SLOGOSection being displayed. 
 	//The SLOGOManager class will also contain a setScreen method which 
 	//one can use to change the current screen.
-	public static final String DEFAULT_UI_TEXT_RESOURCES_PATH = "UIText";
-    public ResourceBundle myUITextResources = ResourceBundle.getBundle(DEFAULT_UI_TEXT_RESOURCES_PATH);
-	public String TITLE = myUITextResources.getString("Title");
+	public String TITLE;
 	
-	private Scene myScene;
-	private Group myRoot;
 	private SLOGOSection mySection; // Holds the different "sections" of the application. Currently there is just the library/text_input/drawing board section.
+	private Scene myScene;
 	private Stage myStage;
 	private Timeline myAnimation;
 	
 	
 	public Scene init(Stage stage, int width, int height){
+
 		
 		this.myStage = stage;
-		this.myRoot = new Group();
-		this.myScene = new Scene(myRoot,width,height,Color.WHITE);
-		this.mySection = new OptionSelectScreen(this);
+		this.mySection = new ParseAndDrawSection(this);
+
+		Group root = mySection.getRoot();	
+		this.myScene = new Scene(root,width,height,Color.WHITE);
+
+		TITLE = mySection.getTitle();
+
 		this.myScene.setOnKeyPressed(e -> handleKeyPressed(e.getCode()));
 		this.myScene.setOnKeyReleased(e -> handleKeyReleased(e.getCode()));
 		this.myScene.setOnMouseClicked(e -> handleMouseInput(e.getSceneX(), e.getSceneY()));
@@ -72,30 +76,6 @@ public class SLOGOManager {
 	public void setSection(SLOGOSection section){
 		//change the current screen
 		this.mySection = section;
-	}
-	
-	public void addToRoot(Node node, int i){
-		this.myRoot.getChildren().add(i, node);
-	}
-	
-	public void addToRoot(Node node) {
-		// TODO Auto-generated method stub
-		this.myRoot.getChildren().add(node);
-	}
-	
-	public void removeFromRoot(Node node){
-		this.myRoot.getChildren().remove(node);
-	}
-	
-	public int removeFromRootInt(Node node){
-		ObservableList<Node> nodeList = this.myRoot.getChildren();
-		int result = nodeList.indexOf(node);
-		nodeList.remove(node);
-		return result;
-	}
-	
-	public void clearRoot(){
-		this.myRoot.getChildren().clear();
 	}
 	
 	public void setStageWidth(double width){
