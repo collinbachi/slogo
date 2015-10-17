@@ -1,4 +1,4 @@
-package SLOGO;
+package slogo;
 
 
 public interface DrawingBoard {

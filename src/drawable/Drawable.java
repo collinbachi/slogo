@@ -1,17 +1,66 @@
 package drawable;
 
 public interface Drawable {
-	public abstract void showObj();
-	public abstract void hideObj();
-	public abstract void forward();
-	public abstract void back();
-	public abstract void left();
-	public abstract void right();
-	public abstract void setHeading();
-	public abstract void towards();
-	public abstract void setXY();
-	public abstract void penUp();
-	public abstract void penDown();
-	public abstract void Home();
-	public abstract void clearScreen();
+
+	// The drawable object (turtle to start) implements this.
+	// The client has an object of type Drawable that it passes commands from the parser to.
+
+
+	void showObj();
+
+	void hideObj();
+	
+	void setForward(double amt);
+	
+	void setBack(double amt);
+	
+	void setLeft(double degrees);
+	
+	void setRight(double degrees);
+	
+	void setHeading(double degrees);
+	
+	void setTowards(double x, double y);
+
+	void setPenUp();
+	
+	void setPenDown();
+	
+	void setToHome();
+	
+	void setClearScreen();
+
+	void drawForward(double amt);
+	
+	void drawBack(double amt);
+	
+	void drawLeft(double degrees);
+	
+	void drawRight(double degrees);
+	
+	void drawHeading(double degrees);
+	
+	void drawTowards(double x, double y);
+	
+	void drawXY(double x, double y);
+
+	void drawPenUp();
+	
+	void drawPenDown();
+	
+	void drawToHome();
+	
+	void drawClearScreen();
+
+	double getX();
+
+	double getY();
+
+	double getHeading();
+
+	Boolean getPenUp();
+
+	Boolean getShowing();
+
+	void addAnimationToQueue();
 }
