@@ -1,5 +1,6 @@
-package SLOGO;
+package slogo;
 
+import turtle_commands.ParserCommand;
 
 public interface ParserClient {
 

@@ -1,4 +1,4 @@
-package SLOGO;
+package drawable;
 
 public interface Drawable {
 
