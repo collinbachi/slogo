@@ -3,8 +3,8 @@ package View;
 import java.util.concurrent.TimeUnit;
 
 import Client.ParserClient;
-import Drawable.DrawCommand.DrawCommand;
-import Drawable.DrawCommand.DrawRequest;
+import Drawable.DrawCommand;
+import Drawable.DrawRequest;
 import SLOGO.SLOGOApplication;
 import javafx.animation.PathTransition;
 import javafx.animation.Animation.Status;

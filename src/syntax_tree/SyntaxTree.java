@@ -3,13 +3,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import Parser.ParserCommand;
+
 public class SyntaxTree {
 
 	private HashSet<String> commandSet = new HashSet<String>();
 	private HashSet<String> mathSet = new HashSet<String>();
 	private HashSet<String> booleanSet = new HashSet<String>();
 	private ArrayList<String> inputCommands = new ArrayList<String>();
-	private ArrayList<String> outputCommands = new ArrayList<String>();
+	private ArrayList<ParserCommand> outputCommands = new ArrayList<ParserCommand>();
 	private HashMap<String, returnsValue> variableMap = new HashMap<String, returnsValue>();
 	private HashMap<String, returnsCommandList> commandListMap = new HashMap<String, returnsCommandList>();
 
@@ -23,10 +25,11 @@ public class SyntaxTree {
 		inputCommands.add(input);
 	}
 
-	public void parseTokens(){
+	public ArrayList<ParserCommand> parseTokens(){
 		commandFactory command = new commandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap, commandListMap);
 		outputCommands.addAll(command.getCommandList());
-		System.out.println(outputCommands.toString());
+		//System.out.println(outputCommands.toString());
+		return outputCommands;
 	}
 	
 	//public static void main(String[] args) {

@@ -2,6 +2,7 @@ package turtle_commands;
 import java.util.HashSet;
 
 import Drawable.Drawable;
+import Parser.ParserCommand;
 
 public class ForwardCommand implements ParserCommand {
 	private double distance;

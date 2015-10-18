@@ -1,7 +1,7 @@
 package other_commands;
 
 import Drawable.Drawable;
-import turtle_commands.ParserCommand;
+import Parser.ParserCommand;
 
 public class ToCommand implements ParserCommand {
 

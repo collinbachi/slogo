@@ -1,6 +1,7 @@
 package turtle_commands;
 
 import Drawable.Drawable;
+import Parser.ParserCommand;
 
 public class SetXYCommand implements ParserCommand {
 	private double x;

@@ -1,5 +1,8 @@
 package Drawable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Parser.ParserCommand;
 
 public interface Drawable {
@@ -64,6 +67,8 @@ public interface Drawable {
 	Boolean getShowing();
 
 	void addAnimationToQueue(ParserCommand cmd);
+	
+	void addAnimationsToQueue(List<ParserCommand> cmds);
 
 	double runCommand(ParserCommand cmd);
 

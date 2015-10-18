@@ -1,7 +1,7 @@
 package View;
 
-import Drawable.DrawCommand.DrawCommand;
-import Drawable.DrawCommand.DrawRequest;
+import Drawable.DrawCommand;
+import Drawable.DrawRequest;
 import javafx.scene.paint.Color;
 
 public interface DrawView {

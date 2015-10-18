@@ -3,9 +3,10 @@ package Client;
 import syntax_tree.SyntaxTree;
 import Drawable.Drawable;
 import Drawable.Turtle;
-import Drawable.DrawCommand.DrawCommand;
-import Drawable.DrawCommand.DrawRequest;
+import Drawable.DrawCommand;
+import Drawable.DrawRequest;
 import Parser.ParserCommand;
+import SLOGO.CommandFactory;
 import SLOGO.SLOGOManager;
 import SLOGO.SLOGOScanner;
 import View.ApplicationView;
@@ -63,8 +64,8 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 			System.out.println(temp);
 			syntaxTree.appendToInput(temp);
 		}
-		syntaxTree.parseTokens();
-		//myDrawable.animate();
+		myDrawable.addAnimationsToQueue(syntaxTree.parseTokens());
+		myDrawable.animate();
 	}
 
 	public double getX() {

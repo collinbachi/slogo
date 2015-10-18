@@ -108,9 +108,7 @@ public class SLOGOScanner {
 				   return b.toString();
                }
            }
-		   System.out.println(text + " not found, assuming it to be variable or constant");
 		   return text;
-
        }else{
     	   return null;
        }

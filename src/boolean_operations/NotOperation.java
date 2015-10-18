@@ -1,7 +1,7 @@
 package boolean_operations;
 
 import Drawable.Drawable;
-import turtle_commands.ParserCommand;
+import Parser.ParserCommand;
 
 public class NotOperation implements ParserCommand {
 	private double expr1;

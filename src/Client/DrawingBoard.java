@@ -1,7 +1,7 @@
 package Client;
 
-import Drawable.DrawCommand.DrawCommand;
-import Drawable.DrawCommand.DrawRequest;
+import Drawable.DrawCommand;
+import Drawable.DrawRequest;
 
 public interface DrawingBoard {
 	

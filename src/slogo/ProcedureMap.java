@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import turtle_commands.ParserCommand;
+import Parser.ParserCommand;
+
 
 public class ProcedureMap {
 	private Map<String, ArrayList<ParserCommand>> pmap;

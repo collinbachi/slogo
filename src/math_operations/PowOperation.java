@@ -1,7 +1,7 @@
 package math_operations;
 
 import Drawable.Drawable;
-import turtle_commands.ParserCommand;
+import Parser.ParserCommand;
 
 public class PowOperation implements ParserCommand {
 	private double base;

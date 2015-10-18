@@ -1,6 +1,8 @@
 package Drawable;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 import Client.DrawingBoard;
@@ -241,8 +243,17 @@ public class Turtle implements Drawable {
 	}
 
 	@Override
+	public void addAnimationsToQueue(List<ParserCommand> cmds) {
+		// TODO Auto-generated method stub
+		while(!cmds.isEmpty()){
+			addAnimationToQueue(cmds.remove(0));
+		}
+	}
+
+	@Override
 	public double runCommand(ParserCommand cmd) {
 		addAnimationToQueue(cmd);
 		return cmd.set(this);
 	}
+
 }

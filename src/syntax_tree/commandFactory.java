@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import Parser.ParserCommand;
+
 public class commandFactory implements returnsCommandList, returnsVariableList, returnsValue {
-	private ArrayList<String> commandList = new ArrayList<String>();
+	private ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
 	private ArrayList<Constant> variableList = new ArrayList<Constant>();
 	private double value;
 	private String currentInput;
@@ -291,16 +293,15 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 	}
 
 	@Override
-	public ArrayList<String> getCommandList() {
+	public ArrayList<ParserCommand> getCommandList() {
 		// TODO Auto-generated method stub
 		return commandList;
 	}
 
 	@Override
-	public void appendToCommandList(String s) {
+	public void appendToCommandList(ParserCommand command) {
 		// TODO Auto-generated method stub
-		commandList.add(s);
-
+		commandList.add(command);
 	}
 
 	@Override

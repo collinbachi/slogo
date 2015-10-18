@@ -1,7 +1,7 @@
 package math_operations;
 
 import Drawable.Drawable;
-import turtle_commands.ParserCommand;
+import Parser.ParserCommand;
 
 public class MinusOperation implements ParserCommand {
 	private double expr1;

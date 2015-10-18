@@ -29,7 +29,6 @@ public class SLOGOManager {
 	
 	
 	public Scene init(Stage stage, int width, int height){
-		
 
 		myRoot = new Group();	
 		this.myScene = new Scene(myRoot,width,height,Color.WHITE);

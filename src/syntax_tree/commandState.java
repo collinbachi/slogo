@@ -1,18 +1,22 @@
 package syntax_tree;
 import java.util.ArrayList;
 
+import Parser.ParserCommand;
+import SLOGO.CommandFactory;
+
 public class commandState {
-	ArrayList<String> commandList = new ArrayList<String>();
+	ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
+	CommandFactory commandObjectFactory = new CommandFactory(); 
 	
 	public commandState(){
 		
 	}
 	
-	protected ArrayList<String> getCommandList(){
+	protected ArrayList<ParserCommand> getCommandList(){
 		return commandList;
 	}
 	
-	protected void appendToCommandList(String s){
+	protected void appendToCommandList(ParserCommand s){
 		commandList.add(s);
 	}
 	

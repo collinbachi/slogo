@@ -1,8 +1,8 @@
 package other_commands;
 
 import Drawable.Drawable;
+import Parser.ParserCommand;
 import SLOGO.VariableMap;
-import turtle_commands.ParserCommand;
 
 public class MakeCommand implements ParserCommand {
 	private String variable;

@@ -1,7 +1,7 @@
 package turtle_queries;
 
 import Drawable.Drawable;
-import turtle_commands.ParserCommand;
+import Parser.ParserCommand;
 
 public class PenDownQuery implements ParserCommand {
 
