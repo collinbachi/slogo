@@ -13,6 +13,6 @@ public class PenUpCommand implements ParserCommand {
 
 	@Override
 	public void draw(Drawable obj) {
-		obj.drawShowing(false);
+		obj.drawPen(false);
 	}
 }
