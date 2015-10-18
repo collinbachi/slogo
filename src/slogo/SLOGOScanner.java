@@ -1,4 +1,4 @@
-package syntax_tree;
+package slogo;
 
 
 public class SLOGOScanner {
@@ -13,7 +13,7 @@ public class SLOGOScanner {
 		CONSTANT("CONSTANT"),
 		LBRACKET("["),
 		RBRACKET("]"),
-		EOF;
+		EOF, SETHEADING, TOWARDS, SETXY;
 
 		private String text;
 
