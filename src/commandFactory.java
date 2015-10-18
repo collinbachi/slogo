@@ -15,20 +15,23 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 	private final String VARIABLE = "arrayList";
 	private final String FOR = "forList";
 	private final String DO = "doList";
+	private final String TO = "toList";
 
 	private Set<String> commandSet;
 	private Set<String> mathSet;
 	private Set<String> booleanSet;
 	private List<String> inputTokens;
 	private Map<String, returnsValue> variableMap;
+	private Map<String, returnsCommandList> commandListMap;
 
 	public commandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
-			Map<String, returnsValue> variableMap, String listType) {
+			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap, String listType) {
 		this.commandSet = commandSet;
 		this.mathSet = mathSet;
 		this.booleanSet = booleanSet;
 		this.inputTokens = inputTokens;
 		this.variableMap = variableMap;
+		this.commandListMap = commandListMap;
 
 		switch (listType) {
 		case COMMAND:
@@ -43,16 +46,20 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 		case DO:
 			buildList(DO);
 			break;
+		case TO:
+			buildList(TO);
+			break;
 		}
 	}
 
 	public commandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
-			Map<String, returnsValue> variableMap) {
+			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap) {
 		this.commandSet = commandSet;
 		this.mathSet = mathSet;
 		this.booleanSet = booleanSet;
 		this.inputTokens = inputTokens;
 		this.variableMap = variableMap;
+		this.commandListMap = commandListMap;
 
 		currentInput = inputTokens.remove(0);
 
@@ -64,8 +71,10 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 			createBoolean(currentInput);
 		} else if (currentInput.charAt(0) == ':') {
 			resolveVariable(currentInput);
-		} else if (variableMap.containsKey(currentInput)){
+		} else if (variableMap.containsKey(currentInput)) {
 			value = variableMap.get(currentInput).returnValue();
+		} else if (commandListMap.containsKey(currentInput)){
+			getCommandList().addAll(commandListMap.get(currentInput).getCommandList());
 		} else {
 			createConstant(currentInput);
 		}
@@ -79,7 +88,10 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 			break;
 
 		case "DOTIMES":
-			
+			DoTimes newDoTimes = new DoTimes(recurseList(DO), this, variableMap, inputTokens);
+			getCommandList().addAll(newDoTimes.getCommandList());
+			break;
+
 		case "FOR":
 			For newFor = new For(recurseList(FOR), this, variableMap, inputTokens);
 			getCommandList().addAll(newFor.getCommandList());
@@ -93,6 +105,12 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 		case "IFELSE":
 			IfElse newIfElse = new IfElse(recurse(), recurse(), recurse());
 			getCommandList().addAll(newIfElse.getCommandList());
+			break;
+			
+		case "TO":
+			String commandName = inputTokens.remove(0);
+			recurseList(TO);
+			commandListMap.put(commandName, recurse());
 			break;
 
 		case "FD":
@@ -224,23 +242,22 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 	}
 
 	protected commandFactory recurse() {
-		return new commandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap);
+		return new commandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap);
 	}
 
 	protected commandFactory recurseList(String listType) {
-		return new commandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap,
-				listType);
+		return new commandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap, listType);
 	}
 
 	private void buildList(String listType) {
 		String previousToken = inputTokens.get(0);
-		
-		if(listType.equals(DO)){
+		if(listType.equals(TO)){ inputTokens.remove(0); }
+
+		if (listType.equals(DO)) {
 			inputTokens.remove(0);
 			indexVariable = inputTokens.remove(0);
 			Constant indexStart = new Constant(1);
 			variableMap.put(indexVariable, indexStart);
-			getVariableList().add(indexStart);
 		}
 
 		if (listType.equals(FOR)) {
@@ -255,8 +272,14 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 			previousToken = inputTokens.get(0);
 			if (listType.equals(COMMAND)) {
 				getCommandList().addAll(recurse().getCommandList());
+			} else if (listType.equals(TO)) {
+				if(previousToken.equals("]")) {
+					inputTokens.remove(0);
+					return; 
+				}
+				variableMap.put(inputTokens.remove(0), new Constant((int) recurse().returnValue()));
 			} else {
-				getVariableList().add(new Constant((int)recurse().returnValue()));
+				getVariableList().add(new Constant((int) recurse().returnValue()));
 			}
 		}
 	}

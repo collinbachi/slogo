@@ -14,25 +14,52 @@ public class SyntaxTree {
 		buildBooleanSet();
 
 		HashMap<String, returnsValue> variableMap = new HashMap<String, returnsValue>();
+		HashMap<String, returnsCommandList> commandListMap = new HashMap<String, returnsCommandList>();
 		ArrayList<String> inputCommands = new ArrayList<String>();
 		ArrayList<String> outputCommands = new ArrayList<String>();
+		
+		inputCommands.add("TO");
+		inputCommands.add("commandVar");
+		inputCommands.add("[");
+		inputCommands.add("A");
+		inputCommands.add("1");
+		inputCommands.add("B");
+		inputCommands.add("4");
+		inputCommands.add("]");
+		inputCommands.add("[");
+		inputCommands.add("FD");
+		inputCommands.add("SUM");
+		inputCommands.add("A");
+		inputCommands.add("B");
+		inputCommands.add("]");
+		inputCommands.add("commandVar");
 
-		inputCommands.add("MAKE");
-		inputCommands.add("VAR");
-		inputCommands.add("3");
-		inputCommands.add("FOR");
-		inputCommands.add("[");
-		inputCommands.add("INDEX");
-		inputCommands.add("1");
-		inputCommands.add("1");
-		inputCommands.add("1");
-		inputCommands.add("]");
-		inputCommands.add("[");
-		inputCommands.add("FD");
-		inputCommands.add("INDEX");
-		inputCommands.add("FD");
-		inputCommands.add("VAR");
-		inputCommands.add("]");
+		//inputCommands.add("DOTIMES");
+		//inputCommands.add("[");
+		//inputCommands.add("INDEX");
+		//inputCommands.add("6");
+		//inputCommands.add("]");
+		//inputCommands.add("[");
+		//inputCommands.add("FD");
+		//inputCommands.add("INDEX");
+		//inputCommands.add("]");
+
+		//inputCommands.add("MAKE");
+		//inputCommands.add("VAR");
+		//inputCommands.add("3");
+		//inputCommands.add("FOR");
+		//inputCommands.add("[");
+		//inputCommands.add("INDEX");
+		//inputCommands.add("1");
+		//inputCommands.add("1");
+		//inputCommands.add("1");
+		//inputCommands.add("]");
+		//inputCommands.add("[");
+		//inputCommands.add("FD");
+		//inputCommands.add("INDEX");
+		//inputCommands.add("FD");
+		//inputCommands.add("VAR");
+		//inputCommands.add("]");
 
 		// inputCommands.add("IFELSE");
 		// inputCommands.add("GREATERP");
@@ -62,7 +89,7 @@ public class SyntaxTree {
 		// inputCommands.add("]");
 
 		while (!inputCommands.isEmpty()) {
-			commandFactory command = new commandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap);
+			commandFactory command = new commandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap, commandListMap);
 			outputCommands.addAll(command.getCommandList());
 		}
 		System.out.println(outputCommands.toString());
