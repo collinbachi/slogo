@@ -1,6 +1,6 @@
-package turtle_commands;
+package Parser;
 
-import drawable.Drawable;
+import Drawable.Drawable;
 
 public interface ParserCommand {
 

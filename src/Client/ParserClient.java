@@ -1,11 +1,16 @@
-package slogo;
+package Client;
 
-import turtle_commands.ParserCommand;
+import Parser.ParserCommand;
+import javafx.scene.paint.Color;
 
 public interface ParserClient {
 
 	// The general application manager implements this, is passed into parser as type ParserClient.
 	// This is how the parser interacts with the manager.
+
+	void handleParseError (String error);
+
+	void parseText(String text);
 
 	double getX();
 
@@ -17,6 +22,8 @@ public interface ParserClient {
 
 	Boolean getShowing();
 
-	void postCommand(ParserCommand cmd);
+	double postCommand(ParserCommand cmd);
+
+	void setPenColor(Color color);
 
 }
