@@ -8,12 +8,12 @@ public class PenDownCommand implements ParserCommand {
 	@Override
 	public double set(Drawable obj) {
 		// TODO Auto-generated method stub
-		obj.setPenDown();
+		obj.setPen(true);
 		return 1;
 	}
 
 	@Override
 	public void draw(Drawable obj) {
-		obj.drawPenDown();
+		obj.drawPen(true);
 	}
 }

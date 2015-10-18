@@ -12,6 +12,6 @@ public class HideTurtleCommand implements ParserCommand {
 
 	@Override
 	public void draw(Drawable obj) {
-		obj.hideObj();
+		obj.drawShowing(false);
 	}
 }

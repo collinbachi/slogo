@@ -120,7 +120,87 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 			Forward newForward = new Forward(recurse());
 			getCommandList().addAll(newForward.getCommandList());
 			break;
+			
+		case "BK":
+			Back newBack = new Back(recurse());
+			getCommandList().addAll(newBack.getCommandList());
+			break;
+			
+		case "LT":
+			Left newLeft = new Left(recurse());
+			getCommandList().addAll(newLeft.getCommandList());
+			break;
+			
+		case "RT":
+			Right newRight = new Right(recurse());
+			getCommandList().addAll(newRight.getCommandList());
+			break;
 
+		case "SETH":
+			SetHeading newSetHeading = new SetHeading(recurse());
+			getCommandList().addAll(newSetHeading.getCommandList());
+			break;
+			
+		case "TOWARDS":
+			Towards newTowards = new Towards(recurse(), recurse());
+			getCommandList().addAll(newTowards.getCommandList());
+			break;
+			
+		case "SETXY":
+			SetXY newSetXY = new SetXY(recurse(), recurse());
+			getCommandList().addAll(newSetXY.getCommandList());
+			break;
+			
+		case "PENDOWN":
+			PenDown newPenDown = new PenDown();
+			getCommandList().addAll(newPenDown.getCommandList());
+			break;
+			
+		case "PENUP":
+			PenUp newPenUp = new PenUp();
+			getCommandList().addAll(newPenUp.getCommandList());
+			break;
+		
+		case "SHOWTURTLE":
+			ShowTurtle newShowTurtle = new ShowTurtle();
+			getCommandList().addAll(newShowTurtle.getCommandList());
+			break;
+			
+		case "HIDETURTLE":
+			HideTurtle newHideTurtle = new HideTurtle();
+			getCommandList().addAll(newHideTurtle.getCommandList());
+			break;
+			
+		case "HOME":
+			Home newHome = new Home();
+			getCommandList().addAll(newHome.getCommandList());
+			break;
+			
+		case "XCOR?":
+			Xcor newXcor = new Xcor();
+			getCommandList().addAll(newXcor.getCommandList());
+			break;
+			
+		case "YCOR?":
+			Ycor newYcor = new Ycor();
+			getCommandList().addAll(newYcor.getCommandList());
+			break;
+			
+		case "HEADING?":
+			Heading newHeading = new Heading();
+			getCommandList().addAll(newHeading.getCommandList());
+			break;
+		
+		case "PENDOWN?":
+			PenDownQuery newPenDownQuery = new PenDownQuery();
+			getCommandList().addAll(newPenDownQuery.getCommandList());
+			break;
+			
+		case "SHOWING?":
+			Showing newShowing = new Showing();
+			getCommandList().addAll(newShowing.getCommandList());
+			break;
+			
 		case "[":
 			// TODO: Create a list class?
 			buildList(COMMAND);
