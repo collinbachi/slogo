@@ -1,8 +1,12 @@
 
-public class Not extends booleanState implements returnsBoolean{
+public class Not extends valueState implements returnsValue{
 	
-	public Not(returnsBoolean arg0){
-		bool = !arg0.returnBoolean();
+	public Not(returnsValue arg0){
+		if(arg0.returnValue() == 1){
+			value = 0;
+		}else{
+			value = 1; 
+		}
 	}
 
 }

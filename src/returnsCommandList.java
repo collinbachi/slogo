@@ -4,7 +4,6 @@ public interface returnsCommandList {
 	
 	ArrayList<String> getCommandList();
 	
-	
 	void appendToCommandList(String s);
 	
 }

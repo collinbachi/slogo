@@ -1,8 +1,13 @@
 
-public class Or extends booleanState implements returnsBoolean{
+public class Or extends valueState implements returnsValue{
 	
-	public Or(returnsBoolean arg0, returnsBoolean arg1){
-		bool = arg0.returnBoolean() || arg1.returnBoolean();
+	public Or(returnsValue arg0, returnsValue arg1){
+		if((arg0.returnValue() == 1) || (arg1.returnValue() == 1)){
+			value = 1;
+		}else{
+			value = 0; 
+		}
+
 	}
 
 }

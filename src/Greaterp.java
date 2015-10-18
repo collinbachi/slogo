@@ -1,8 +1,12 @@
 
-public class Greaterp extends booleanState implements returnsBoolean{
+public class Greaterp extends valueState implements returnsValue{
 	
 	public Greaterp(returnsValue arg0, returnsValue arg1){
-		bool = arg0.returnValue() > arg1.returnValue();
+		if(arg0.returnValue() > arg1.returnValue()){
+			value = 1;
+		}else{
+			value = 0;
+		}
 	}
 
 }
