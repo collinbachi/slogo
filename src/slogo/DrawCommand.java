@@ -1,4 +1,6 @@
-package slogo;
+package SLOGO;
+
+import View.DrawView;
 
 public interface DrawCommand {
 

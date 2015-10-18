@@ -22,12 +22,14 @@ public class SLOGOManager {
 	private Group myRoot;
 	
 	private SLOGOSection mySection; // Holds the different "sections" of the application. Currently there is just the library/text_input/drawing board section.
+	private SLOGOScanner myScanner;
 	private Scene myScene;
 	private Stage myStage;
 	private Timeline myAnimation;
 	
 	
 	public Scene init(Stage stage, int width, int height){
+		
 
 		myRoot = new Group();	
 		this.myScene = new Scene(myRoot,width,height,Color.WHITE);

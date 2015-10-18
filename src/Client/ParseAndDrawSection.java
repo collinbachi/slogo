@@ -1,11 +1,13 @@
 package Client;
 
+import syntax_tree.SyntaxTree;
 import Drawable.Drawable;
 import Drawable.Turtle;
 import Drawable.DrawCommand.DrawCommand;
 import Drawable.DrawCommand.DrawRequest;
 import Parser.ParserCommand;
 import SLOGO.SLOGOManager;
+import SLOGO.SLOGOScanner;
 import View.ApplicationView;
 import View.DrawView;
 import View.ParseAndDrawApplicationView;
@@ -13,7 +15,9 @@ import View.ParseAndDrawDrawView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
+
 public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, ParserClient {
+	private String rawInput = "";
 
 	// Sub-applications
 
@@ -50,8 +54,17 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 	}
 
 	public void parseText(String text) {
-//		myParser.parse(text);
-		myDrawable.animate();
+
+		SLOGOScanner scanner = new SLOGOScanner(text);
+		SyntaxTree syntaxTree = new SyntaxTree();
+		
+		while(scanner.hasNext()){
+			String temp = scanner.next();
+			System.out.println(temp);
+			syntaxTree.appendToInput(temp);
+		}
+		syntaxTree.parseTokens();
+		//myDrawable.animate();
 	}
 
 	public double getX() {
@@ -101,6 +114,13 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 	@Override
 	public void handleKeyReleased(KeyCode code) {
 		// TODO Auto-generated method stub
+		
+		if(code.toString().equals("ENTER")){
+			
+		}
+		rawInput += code.toString();
+		//System.out.println(rawInput);
+		
 		
 	}
 

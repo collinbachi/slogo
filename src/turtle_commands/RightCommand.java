@@ -1,6 +1,6 @@
 package turtle_commands;
 
-import drawable.Drawable;
+import Drawable.Drawable;
 
 public class RightCommand implements ParserCommand {
 	private double degrees;

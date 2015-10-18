@@ -269,7 +269,7 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 			getVariableList().add(indexStart);
 		}
 
-		while (!previousToken.equals("]")) {
+		while (!previousToken.equals("]") && inputTokens.size() > 0) {
 			previousToken = inputTokens.get(0);
 			if (listType.equals(COMMAND)) {
 				getCommandList().addAll(recurse().getCommandList());

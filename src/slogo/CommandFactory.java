@@ -1,6 +1,6 @@
-package slogo;
+package SLOGO;
 
-import slogo.SLOGOScanner.Token;
+import SLOGO.SLOGOScanner.Token;
 import turtle_commands.BackCommand;
 import turtle_commands.ForwardCommand;
 import turtle_commands.LeftCommand;
@@ -12,7 +12,9 @@ import turtle_commands.TowardsCommand;
 public class CommandFactory {
 	
 	public ParserCommand getCommand(Token type, double expr1, double expr2, String key, VariableMap vmap, ProcedureMap pmap){
-		if(type.equals(Token.FORWARD)){
+		SLOGOScanner.Token newToken = SLOGOScanner.Token.AND;
+
+		if(type.equals("FORWARD")){
 			return new ForwardCommand(expr1);
 		}
 		else if(type.equals(Token.BACK)){

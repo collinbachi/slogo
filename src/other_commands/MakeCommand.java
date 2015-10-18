@@ -1,7 +1,7 @@
 package other_commands;
 
-import drawable.Drawable;
-import slogo.VariableMap;
+import Drawable.Drawable;
+import SLOGO.VariableMap;
 import turtle_commands.ParserCommand;
 
 public class MakeCommand implements ParserCommand {
