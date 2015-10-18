@@ -12,6 +12,6 @@ public class ShowTurtleCommand implements ParserCommand {
 
 	@Override
 	public void draw(Drawable obj) {
-		obj.showObj();
+		obj.setShowing(true);
 	}
 }

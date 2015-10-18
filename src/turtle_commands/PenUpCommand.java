@@ -7,12 +7,12 @@ public class PenUpCommand implements ParserCommand {
 
 	@Override
 	public double set(Drawable obj) {
-		obj.setPenUp();
+		obj.setPen(false);
 		return 0;
 	}
 
 	@Override
 	public void draw(Drawable obj) {
-		obj.drawPenUp();;
+		obj.drawShowing(false);
 	}
 }
