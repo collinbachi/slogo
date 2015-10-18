@@ -18,7 +18,6 @@ public class SLOGOManager {
 	//The SLOGOManager class contains the references to the the Scene, Group, and SLOGOSection being displayed. 
 	//The SLOGOManager class will also contain a setScreen method which 
 	//one can use to change the current screen.
-	public String TITLE;
 
 	private Group myRoot;
 	
@@ -35,8 +34,6 @@ public class SLOGOManager {
 		
 		this.myStage = stage;
 		this.mySection = new ParseAndDrawSection(this);
-
-		TITLE = mySection.getTitle();
 
 		this.myScene.setOnKeyPressed(e -> handleKeyPressed(e.getCode()));
 		this.myScene.setOnKeyReleased(e -> handleKeyReleased(e.getCode()));
@@ -71,10 +68,6 @@ public class SLOGOManager {
 	public void update(double elapsedTime){
 		this.mySection.update(elapsedTime);
 	}
-	
-	public String getTitle () {
-        return TITLE;
-    }
 		
 	public void setSection(SLOGOSection section){
 		//change the current screen

@@ -36,8 +36,6 @@ public class ParseAndDrawApplicationView extends ConcreteView implements Applica
 
 	private HBox penSelect;
 
-	private Color myPenColor;
-
 	private ParserClient myClient;
 
 	private View baseView;
@@ -75,8 +73,8 @@ public class ParseAndDrawApplicationView extends ConcreteView implements Applica
 		myRoot.getChildren().add(parserText);
 
 		this.evaluate = initButton(EVALUATE, X(EVAL_X), Y(EVAL_Y));	
-		System.out.println(X(APP_X));
-		System.out.println(Y(APP_Y));
+//		System.out.println(X(APP_X));
+//		System.out.println(Y(APP_Y));
 		evaluate.setOnAction(e->handleButtonEvaluate());	
 		myRoot.getChildren().add(evaluate);
 	}

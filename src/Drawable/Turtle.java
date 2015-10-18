@@ -6,8 +6,7 @@ import java.util.Queue;
 import Client.DrawingBoard;
 import Drawable.DrawCommand.*;
 import Parser.ParserCommand;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import Parser.ParserCommandMoveForward;
 
 public class Turtle implements Drawable {
 	
@@ -30,7 +29,7 @@ public class Turtle implements Drawable {
 		myBoard = board;
 		myX = 0;
 		myY = 0;
-		myHeading = 90;
+		myHeading = 120;
 		myShowing = true;
 		myPenUp = false;
 		
@@ -38,6 +37,9 @@ public class Turtle implements Drawable {
 		myBoard.drawCommand(start);
 		
 		//For testing
+		
+		ParserCommand move = new ParserCommandMoveForward(300);
+		runCommand(move);
 		
 	}
 
@@ -64,8 +66,8 @@ public class Turtle implements Drawable {
 
 	@Override
 	public double setForward(double amt) {
-		myX += Math.cos(Math.toRadians(myHeading)) * amt;
-		myY += Math.sin(Math.toRadians(myHeading)) * amt;
+		myX += Math.cos(Math.toRadians(90 - myHeading)) * amt;
+		myY += Math.sin(Math.toRadians(90 - myHeading)) * amt;
 		return amt;
 	}
 
@@ -141,8 +143,9 @@ public class Turtle implements Drawable {
 		DrawRequest cmdh = new DrawCommandGetHeading();
 		double h = myBoard.drawRequest(cmdh);
 		
-		double newX = x + Math.cos(Math.toRadians(h))*amt;
-		double newY = y + Math.sin(Math.toRadians(h))*amt;
+		double newX = x + Math.cos(Math.toRadians(90 - h))*amt;
+		double newY = y - Math.sin(Math.toRadians(90 - h))*amt;
+		// amount is subtracted because we have already flipped the y coordinate upside-down in the view when we get it here
 		
 		DrawCommand cmd = new DrawCommandDrawMove(newX, newY, myMoveSpeed);
 		myBoard.drawCommand(cmd);

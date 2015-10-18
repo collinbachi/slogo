@@ -29,13 +29,6 @@ public abstract class SLOGOSection {
 		return myView.getRoot();
 	}
 
-	public String getTitle() {
-		if (myApplicationView == null) {
-			return "";
-		}
-		return myApplicationView.getTitle();
-	}
-	
 	//handleKeyPressed, handleKeyReleased, handleMouseInput,
 	
 	public abstract void update(double elapsedTime);

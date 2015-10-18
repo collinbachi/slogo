@@ -11,6 +11,7 @@ import View.DrawView;
 import View.ParseAndDrawApplicationView;
 import View.ParseAndDrawDrawView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 
 public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, ParserClient {
 
@@ -50,6 +51,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 
 	public void parseText(String text) {
 //		myParser.parse(text);
+		myDrawable.animate();
 	}
 
 	public double getX() {
@@ -74,6 +76,10 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 
 	public double postCommand(ParserCommand cmd) {
 		return myDrawable.runCommand(cmd);
+	}
+
+	public void setPenColor(Color color) {
+		myDrawView.setPenColor(color);
 	}
 
 	// DrawingBoard functions
@@ -106,7 +112,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 
 	@Override
 	public void update(double elapsedTime) {
-		// TODO Auto-generated method stub
+		myDrawView.update();
 		
 	}
 

@@ -2,6 +2,7 @@ package View;
 
 import Drawable.DrawCommand.DrawCommand;
 import Drawable.DrawCommand.DrawRequest;
+import javafx.scene.paint.Color;
 
 public interface DrawView {
 
@@ -28,5 +29,9 @@ public interface DrawView {
 	double executeRequest(DrawRequest cmd);
 	
 	void initObject(String filename, double x, double y, double orientation);
+
+	void setPenColor(Color color);
+	
+	void update();
 	
 }
