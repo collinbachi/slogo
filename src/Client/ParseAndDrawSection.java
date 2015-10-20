@@ -9,6 +9,7 @@ import Parser.ParserCommand;
 import SLOGO.CommandFactory;
 import SLOGO.SLOGOManager;
 import SLOGO.SLOGOScanner;
+import SLOGO.Token;
 import View.ApplicationView;
 import View.DrawView;
 import View.ParseAndDrawApplicationView;
@@ -59,8 +60,8 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		SLOGOScanner scanner = new SLOGOScanner(text);
 		SyntaxTree syntaxTree = new SyntaxTree();
 		
-		while(scanner.hasNext()){
-			String temp = scanner.next();
+		for(Token t: scanner){
+			String temp = t.toString();
 			System.out.println(temp);
 			syntaxTree.appendToInput(temp);
 		}
