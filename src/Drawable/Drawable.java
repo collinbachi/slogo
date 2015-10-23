@@ -16,11 +16,7 @@ public interface Drawable {
 
 	double setForward(double amt);
 	
-	double setBack(double amt);
-	
 	double setLeft(double degrees);
-	
-	double setRight(double degrees);
 	
 	double setHeading(double degrees);
 	
@@ -33,16 +29,22 @@ public interface Drawable {
 	double setToHome();
 	
 	double setClearScreen();
+	
+	double setBackground(double index);
+	
+	double setPenColor(double index);
+	
+	double setPenSize(double pixels);
+	
+	double setShape(double index);
+	
+	double setPalette(double index, double r, double g, double b);
 
 	void drawShowing(Boolean state);
 
 	void drawForward(double amt);
 	
-	void drawBack(double amt);
-	
 	void drawLeft(double degrees);
-	
-	void drawRight(double degrees);
 	
 	void drawHeading(double degrees);
 	
@@ -55,12 +57,24 @@ public interface Drawable {
 	void drawToHome();
 	
 	void drawClearScreen();
+	
+	void drawBackground(double index);
+	
+	void drawStamp();
+	
+	void drawClearStamps();
 
 	double getX();
 
 	double getY();
 
 	double getHeading();
+	
+	double getPenColor();
+	
+	double getShape();
+	
+	double getID();
 
 	Boolean getPenUp();
 
