@@ -73,10 +73,10 @@ public class Turtle implements Drawable {
 		return amt;
 	}
 
-	@Override
-	public double setBack(double amt) {
-		return setForward(-1 * amt);	
-	}
+//	@Override
+//	public double setBack(double amt) {
+//		return setForward(-1 * amt);	
+//	}
 
 	@Override
 	public double setLeft(double degrees) {
@@ -84,10 +84,10 @@ public class Turtle implements Drawable {
 		return degrees;	
 	}
 
-	@Override
-	public double setRight(double degrees) {
-		return setLeft( -1 * degrees);
-	}
+//	@Override
+//	public double setRight(double degrees) {
+//		return setLeft( -1 * degrees);
+//	}
 
 	@Override
 	public double setHeading(double degrees) {
@@ -153,10 +153,10 @@ public class Turtle implements Drawable {
 		myBoard.drawCommand(cmd);
 	}
 
-	@Override
-	public void drawBack(double amt) {
-		drawForward(-1 * amt);
-	}
+//	@Override
+//	public void drawBack(double amt) {
+//		drawForward(-1 * amt);
+//	}
 
 	@Override
 	public void drawLeft(double degrees) {
@@ -169,10 +169,10 @@ public class Turtle implements Drawable {
 		myBoard.drawCommand(cmd);
 	}
 
-	@Override
-	public void drawRight(double degrees) {
-		drawLeft(-1 * degrees);
-	}
+//	@Override
+//	public void drawRight(double degrees) {
+//		drawLeft(-1 * degrees);
+//	}
 
 	@Override
 	public void drawHeading(double degrees) {
@@ -254,6 +254,72 @@ public class Turtle implements Drawable {
 	public double runCommand(ParserCommand cmd) {
 		addAnimationToQueue(cmd);
 		return cmd.set(this);
+	}
+
+	@Override
+	public double setBackground(double index) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double setPenColor(double index) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double setPenSize(double pixels) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double setShape(double index) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double setPalette(double index, double r, double g, double b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void drawBackground(double index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void drawStamp() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void drawClearStamps() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getPenColor() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getShape() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getID() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

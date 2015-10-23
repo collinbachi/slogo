@@ -12,14 +12,14 @@ public class RightCommand implements ParserCommand {
 
 	@Override
 	public double set(Drawable obj) {
-		obj.setRight(degrees);
+		obj.setLeft(-degrees);
 		return degrees;
 	}
 
 	@Override
 	public void draw(Drawable obj) {
 		// TODO Auto-generated method stub
-		obj.drawRight(degrees);
+		obj.drawLeft(-degrees);
 	}
 
 }

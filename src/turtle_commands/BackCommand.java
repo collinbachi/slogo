@@ -13,13 +13,13 @@ public class BackCommand implements ParserCommand {
 	@Override
 	public double set(Drawable obj) {
 		// TODO Auto-generated method stub
-		obj.setBack(distance);
+		obj.setForward(-distance);
 		return distance;
 	}
 
 	@Override
 	public void draw(Drawable obj) {
 		// TODO Auto-generated method stub
-		obj.drawBack(distance);
+		obj.drawForward(-distance);
 	}
 }
