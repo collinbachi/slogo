@@ -24,7 +24,7 @@ import view.ParseAndDrawDrawView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import parser.ParserCommand;
-import slogo.CommandFactory;
+import slogo.ParserCommandFactory;
 import slogo.SLOGOManager;
 import slogo.SLOGOScanner;
 
