@@ -1,5 +1,8 @@
 package client;
 
+import java.util.List;
+
+import parser.ParserCommand;
 import javafx.scene.paint.Color;
 import parser.ParserCommand;
 
@@ -23,6 +26,12 @@ public interface ParserClient {
 	Boolean getShowing();
 
 	double postCommand(ParserCommand cmd);
+	
+	double postCommandToAll(ParserCommand cmd);
+	
+	int setActives(List<Integer> actives);
+	
+	int getLastActive();
 
 	void setPenColor(Color color);
 

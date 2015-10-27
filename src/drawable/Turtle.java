@@ -40,8 +40,8 @@ public class Turtle implements Drawable {
 		
 		//For testing
 		
-		ParserCommand move = new ParserCommandMoveForward(300);
-		runCommand(move);
+//		ParserCommand move = new ParserCommandMoveForward(300);
+//		runCommand(move);
 		
 	}
 
