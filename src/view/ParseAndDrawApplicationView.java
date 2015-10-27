@@ -91,6 +91,7 @@ public class ParseAndDrawApplicationView extends ConcreteView implements Applica
 		this.newInstance = initButton(NEWINSTANCE, X(INST_X), Y(INST_Y));
 		newInstance.setOnAction(e->handleButtonNewInstance());
 		myRoot.getChildren().add(newInstance);
+		
 	}
 
 	private void handleButtonEvaluate() {

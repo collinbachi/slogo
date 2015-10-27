@@ -21,4 +21,8 @@ public class ColorPalette extends ConcreteView {
 		cp.setPrefWidth(W(CP_W));
 		cp.setPrefHeight(H(CP_H));
 	}
+	
+	public ColorPicker getColorPicker(){
+		return cp;
+	}
 }
