@@ -48,6 +48,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		//myParser = new SLOGOScanner(this); // ?
 		
 		myDrawables = new DrawableSet(this);
+		myDrawables.makeFirst();
 
 	}
 
@@ -70,7 +71,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 			syntaxTree.appendToInput(temp);
 		}
 		for (Drawable obj: myDrawables.getActiveObjs()) {
-			obj.addAnimationsToQueue(syntaxTree.parseTokens());
+			obj.addAnimationsToQueue(syntaxTree.parseTokens(this));
 		}
 		for (Drawable obj: myDrawables.getActiveObjs()) {
 			obj.animate();
@@ -137,12 +138,14 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		return;
 	}
 
-	public void drawCommand(DrawCommand cmd) {
-		myDrawView.executeCommand(cmd);
+	public void drawCommand(Drawable obj, DrawCommand cmd) {
+		int i = myDrawables.getIndex(obj);
+		myDrawView.executeCommand(i, cmd);
 	}
 
-	public double drawRequest(DrawRequest cmd) {
-		return myDrawView.executeRequest(cmd);
+	public double drawRequest(Drawable obj, DrawRequest cmd) {
+		int i = myDrawables.getIndex(obj);
+		return myDrawView.executeRequest(i, cmd);
 	}
 
 	// SLOGOSection functions 

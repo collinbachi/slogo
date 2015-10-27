@@ -87,4 +87,6 @@ public interface Drawable {
 	double runCommand(ParserCommand cmd);
 
 	void animate();
+	
+	void draw();
 }

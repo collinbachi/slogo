@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import client.ParserClient;
 import parser.ParserCommand;
 
 public class SyntaxTree {
@@ -15,6 +16,8 @@ public class SyntaxTree {
 	private HashMap<String, returnsValue> variableMap = new HashMap<String, returnsValue>();
 	private HashMap<String, returnsCommandList> commandListMap = new HashMap<String, returnsCommandList>();
 
+	private ParserClient myClient;
+
 	public SyntaxTree(){
 		buildCommandSet();
 		buildMathSet();
@@ -25,7 +28,8 @@ public class SyntaxTree {
 		inputCommands.add(input);
 	}
 
-	public ArrayList<ParserCommand> parseTokens(){
+	public ArrayList<ParserCommand> parseTokens(ParserClient client){
+		myClient = client;
 		TreeCommandFactory command = new TreeCommandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap, commandListMap);
 		outputCommands.addAll(command.getCommandList());
 		//System.out.println(outputCommands.toString());
