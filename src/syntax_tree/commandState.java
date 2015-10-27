@@ -1,12 +1,14 @@
 package syntax_tree;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import parser.ParserCommand;
 import slogo.CommandFactory;
+import parser.ParserCommand;
+import slogo.ParserCommandFactory;
 
 public class commandState {
 	ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
-	CommandFactory commandObjectFactory = new CommandFactory(); 
+	ParserCommandFactory commandObjectFactory = new ParserCommandFactory(); 
 	
 	public commandState(){
 		

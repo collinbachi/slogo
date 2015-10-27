@@ -7,6 +7,7 @@ public class StampCommand implements ParserCommand {
 
 	@Override
 	public double set(Drawable obj) {
+//		instance.stampSet.addStamp(obj.getX(), obj.getY(), obj.getShape());
 		return obj.getShape();
 	}
 
@@ -14,5 +15,4 @@ public class StampCommand implements ParserCommand {
 	public void draw(Drawable obj) {
 		obj.drawStamp();
 	}
-
 }

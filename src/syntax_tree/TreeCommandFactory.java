@@ -7,7 +7,7 @@ import java.util.Set;
 
 import parser.ParserCommand;
 
-public class commandFactory implements returnsCommandList, returnsVariableList, returnsValue {
+public class TreeCommandFactory implements returnsCommandList, returnsVariableList, returnsValue {
 	private ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
 	private ArrayList<Constant> variableList = new ArrayList<Constant>();
 	private double value;
@@ -27,7 +27,7 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 	private Map<String, returnsValue> variableMap;
 	private Map<String, returnsCommandList> commandListMap;
 
-	public commandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
+	public TreeCommandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
 			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap, String listType) {
 		this.commandSet = commandSet;
 		this.mathSet = mathSet;
@@ -55,7 +55,7 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 		}
 	}
 
-	public commandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
+	public TreeCommandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
 			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap) {
 		this.commandSet = commandSet;
 		this.mathSet = mathSet;
@@ -324,12 +324,12 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 		}
 	}
 
-	protected commandFactory recurse() {
-		return new commandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap);
+	protected TreeCommandFactory recurse() {
+		return new TreeCommandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap);
 	}
 
-	protected commandFactory recurseList(String listType) {
-		return new commandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap, listType);
+	protected TreeCommandFactory recurseList(String listType) {
+		return new TreeCommandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap, listType);
 	}
 
 	private void buildList(String listType) {
