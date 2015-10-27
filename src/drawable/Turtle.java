@@ -9,6 +9,7 @@ import client.DrawingBoard;
 import drawable.DrawCommand.*;
 import parser.ParserCommand;
 import parser.ParserCommandMoveForward;
+import turtle_commands.LeftCommand;
 
 public class Turtle implements Drawable {
 	
@@ -22,6 +23,8 @@ public class Turtle implements Drawable {
 	Boolean myPenUp;
 	Boolean myShowing;
 	
+	private Boolean isDrawing;
+	
 	private static final String mySpriteFileName = "turtle.jpg";
 	private static final double myMoveSpeed = 50;
 	private static final double myTurnSpeed = 30;
@@ -34,11 +37,15 @@ public class Turtle implements Drawable {
 		myHeading = 120;
 		myShowing = true;
 		myPenUp = false;
+		isDrawing = false;
 		
 		//For testing
-		
-//		ParserCommand move = new ParserCommandMoveForward(300);
+
+//		ParserCommand move = new ParserCommandMoveForward(50);
 //		runCommand(move);
+//
+//		ParserCommand move2 = new ParserCommandMoveForward(150);
+//		runCommand(move2);
 		
 	}
 
@@ -50,9 +57,10 @@ public class Turtle implements Drawable {
 	}
 
 	public void animate() {
-		while (myCommands.size() != 0) {
+		while (myCommands.size() != 0 && !isDrawing) {
 			ParserCommand cmd = myCommands.poll();
 			cmd.draw(this);
+			isDrawing = true;
 		}
 	}
 
@@ -243,12 +251,10 @@ public class Turtle implements Drawable {
 	public void addAnimationToQueue(ParserCommand cmd) {
 		myCommands.add(cmd);
 	}
-
-	@Override
+	
 	public void addAnimationsToQueue(List<ParserCommand> cmds) {
-		// TODO Auto-generated method stub
-		while(!cmds.isEmpty()){
-			addAnimationToQueue(cmds.remove(0));
+		for (ParserCommand cmd: cmds) {
+			runCommand(cmd);
 		}
 	}
 
@@ -322,6 +328,10 @@ public class Turtle implements Drawable {
 	public double getID() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public void setDoneDrawing() {
+		isDrawing = false;
 	}
 
 }

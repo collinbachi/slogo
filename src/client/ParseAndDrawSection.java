@@ -18,7 +18,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 
-public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, ParserClient {
+public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, ParserClient, DrawClient {
 	private String rawInput = "";
 
 	// Sub-applications
@@ -40,7 +40,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		// NOTE -- DrawView currently refers to the same object
 		// However, the class is constructed in this way so that if the view becomes too complicated
 		// And needs to be split up into different classes, the application won't need to be rewritten		
-		myDrawView = new ParseAndDrawDrawView(myView, this);
+		myDrawView = new ParseAndDrawDrawView(myView, this, this);
 		myApplicationView = new ParseAndDrawApplicationView(myView, this);
 		
 		//myParser = new SLOGOScanner(this); // ?
@@ -66,9 +66,12 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 			System.out.println(temp);
 			syntaxTree.appendToInput(temp);
 		}
+		syntaxTree.parseTokens(this);
+		
 		for (Drawable obj: myDrawables.getActiveObjs()) {
 			obj.addAnimationsToQueue(syntaxTree.parseTokens(this));
 		}
+		
 		for (Drawable obj: myDrawables.getActiveObjs()) {
 			obj.animate();
 		}
@@ -76,6 +79,9 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 	
 	//Returns the last int in the list
 	public int setActives(List<Integer> actives) {
+		if (actives.size() < 1) {
+			return -1;
+		}
 		myDrawables.setActive(actives);
 		return actives.get(actives.size() - 1);
 	}
@@ -167,6 +173,9 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 
 	@Override
 	public void update(double elapsedTime) {
+		for (Drawable obj : myDrawables.getAll()) {
+			obj.animate();
+		}
 		myDrawView.update();
 		
 	}
@@ -176,4 +185,10 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void drawingDone(int id) {
+		myDrawables.get(id).setDoneDrawing();
+	}
+
 }
