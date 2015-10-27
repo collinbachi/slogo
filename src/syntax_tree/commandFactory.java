@@ -1,4 +1,5 @@
 package syntax_tree;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,10 +26,10 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 	private Set<String> booleanSet;
 	private List<String> inputTokens;
 	private Map<String, returnsValue> variableMap;
-	private Map<String, returnsCommandList> commandListMap;
+	private Map<String, ArrayList<String>> commandListMap;
 
 	public commandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
-			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap, String listType) {
+			Map<String, returnsValue> variableMap, Map<String, ArrayList<String>> commandListMap, String listType) {
 		this.commandSet = commandSet;
 		this.mathSet = mathSet;
 		this.booleanSet = booleanSet;
@@ -56,7 +57,7 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 	}
 
 	public commandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
-			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap) {
+			Map<String, returnsValue> variableMap, Map<String, ArrayList<String>> commandListMap) {
 		this.commandSet = commandSet;
 		this.mathSet = mathSet;
 		this.booleanSet = booleanSet;
@@ -76,28 +77,89 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 			resolveVariable(currentInput);
 		} else if (variableMap.containsKey(currentInput)) {
 			value = variableMap.get(currentInput).returnValue();
-		} else if (commandListMap.containsKey(currentInput)){
-			getCommandList().addAll(commandListMap.get(currentInput).getCommandList());
+		} else if (commandListMap.containsKey(currentInput)) {
+			ArrayList<String> toList = commandListMap.get(currentInput);
+			while(!toList.isEmpty()){
+				inputTokens.add(0, toList.remove(0));
+			}
+			recurse();
 		} else {
 			createConstant(currentInput);
 		}
 	}
 
 	private void createCommand(String currentInput) {
+		String indexVariable;
+		int start;
+		int end;
+		int index;
+		ArrayList<String> forTokens;
 		switch (currentInput) {
 		case "REPEAT":
-			Repeat newRepeat = new Repeat(recurse(), recurseList(COMMAND));
+			Repeat newRepeat = new Repeat(recurse(), recurse());
 			getCommandList().addAll(newRepeat.getCommandList());
 			break;
 
 		case "DOTIMES":
-			DoTimes newDoTimes = new DoTimes(recurseList(DO), this, variableMap, inputTokens);
-			getCommandList().addAll(newDoTimes.getCommandList());
+			inputTokens.remove(0); // Remove '['
+
+			indexVariable = inputTokens.remove(0);
+			start = 1;
+			end = (int) new Constant((int) recurse().returnValue()).returnValue();
+
+			inputTokens.remove(0);// Remove ']'
+			inputTokens.remove(0);// Remove '['
+
+			forTokens = new ArrayList<String>();
+			index = 0;
+			while (!inputTokens.get(index).equals("]")) {
+				forTokens.add(inputTokens.get(index));
+				index++;
+			}
+
+			for (int i = start; i <= end; i++) {
+				variableMap.put(indexVariable, new Constant(i));
+				commandFactory newCommandFactory = recurse();
+				value = newCommandFactory.returnValue();
+				getCommandList().addAll(newCommandFactory.getCommandList());
+				if (i + 1 <= end) {
+					for (int j = forTokens.size() - 1; j >= 0; j--) {
+						inputTokens.add(0, forTokens.get(j));
+					}
+				}
+			}
 			break;
 
 		case "FOR":
-			For newFor = new For(recurseList(FOR), this, variableMap, inputTokens);
-			getCommandList().addAll(newFor.getCommandList());
+			inputTokens.remove(0); // Remove '['
+
+			indexVariable = inputTokens.remove(0);
+			start = (int) new Constant((int) recurse().returnValue()).returnValue();
+			end = (int) new Constant((int) recurse().returnValue()).returnValue();
+			int increment = (int) new Constant((int) recurse().returnValue()).returnValue();
+
+			inputTokens.remove(0);// Remove ']'
+			inputTokens.remove(0);// Remove '['
+
+			forTokens = new ArrayList<String>();
+			index = 0;
+			while (!inputTokens.get(index).equals("]")) {
+				forTokens.add(inputTokens.get(index));
+				index++;
+			}
+
+			for (int i = start; i <= end; i += increment) {
+				variableMap.put(indexVariable, new Constant(i));
+				commandFactory newCommandFactory = recurse();
+				value = newCommandFactory.returnValue();
+				getCommandList().addAll(newCommandFactory.getCommandList());
+				if (i + 1 <= end) {
+					for (int j = forTokens.size() - 1; j >= 0; j--) {
+						inputTokens.add(0, forTokens.get(j));
+					}
+				}
+			}
+
 			break;
 
 		case "IF":
@@ -109,28 +171,39 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 			IfElse newIfElse = new IfElse(recurse(), recurse(), recurse());
 			getCommandList().addAll(newIfElse.getCommandList());
 			break;
-			
+
 		case "TO":
 			String commandName = inputTokens.remove(0);
-			recurseList(TO);
-			commandListMap.put(commandName, recurse());
+			inputTokens.remove(0); // remove '['
+			while (!inputTokens.get(0).equals("]")) {
+				variableMap.put(inputTokens.remove(0), new Constant(0));
+			}
+			inputTokens.remove(0); // remove ']'
+			inputTokens.remove(0); // remove '['
+
+			ArrayList<String> toCommandList = new ArrayList<String>();
+			while (!inputTokens.get(0).equals("]")) {
+				toCommandList.add(inputTokens.remove(0));
+			}
+
+			commandListMap.put(commandName, toCommandList);
 			break;
 
 		case "FD":
 			Forward newForward = new Forward(recurse());
 			getCommandList().addAll(newForward.getCommandList());
 			break;
-			
+
 		case "BK":
 			Back newBack = new Back(recurse());
 			getCommandList().addAll(newBack.getCommandList());
 			break;
-			
+
 		case "LT":
 			Left newLeft = new Left(recurse());
 			getCommandList().addAll(newLeft.getCommandList());
 			break;
-			
+
 		case "RT":
 			Right newRight = new Right(recurse());
 			getCommandList().addAll(newRight.getCommandList());
@@ -140,70 +213,76 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 			SetHeading newSetHeading = new SetHeading(recurse());
 			getCommandList().addAll(newSetHeading.getCommandList());
 			break;
-			
+
 		case "TOWARDS":
 			Towards newTowards = new Towards(recurse(), recurse());
 			getCommandList().addAll(newTowards.getCommandList());
 			break;
-			
+
 		case "SETXY":
 			SetXY newSetXY = new SetXY(recurse(), recurse());
 			getCommandList().addAll(newSetXY.getCommandList());
 			break;
-			
+
 		case "PENDOWN":
 			PenDown newPenDown = new PenDown();
 			getCommandList().addAll(newPenDown.getCommandList());
 			break;
-			
+
 		case "PENUP":
 			PenUp newPenUp = new PenUp();
 			getCommandList().addAll(newPenUp.getCommandList());
 			break;
-		
+
 		case "SHOWTURTLE":
 			ShowTurtle newShowTurtle = new ShowTurtle();
 			getCommandList().addAll(newShowTurtle.getCommandList());
 			break;
-			
+
 		case "HIDETURTLE":
 			HideTurtle newHideTurtle = new HideTurtle();
 			getCommandList().addAll(newHideTurtle.getCommandList());
 			break;
-			
+
 		case "HOME":
 			Home newHome = new Home();
 			getCommandList().addAll(newHome.getCommandList());
 			break;
-			
+
 		case "XCOR?":
 			Xcor newXcor = new Xcor();
 			getCommandList().addAll(newXcor.getCommandList());
 			break;
-			
+
 		case "YCOR?":
 			Ycor newYcor = new Ycor();
 			getCommandList().addAll(newYcor.getCommandList());
 			break;
-			
+
 		case "HEADING?":
 			Heading newHeading = new Heading();
 			getCommandList().addAll(newHeading.getCommandList());
 			break;
-		
+
 		case "PENDOWN?":
 			PenDownQuery newPenDownQuery = new PenDownQuery();
 			getCommandList().addAll(newPenDownQuery.getCommandList());
 			break;
-			
+
 		case "SHOWING?":
 			Showing newShowing = new Showing();
 			getCommandList().addAll(newShowing.getCommandList());
 			break;
-			
+
 		case "[":
 			// TODO: Create a list class?
-			buildList(COMMAND);
+			// buildList(COMMAND);
+			while (!inputTokens.get(0).equals("]")) {
+				commandFactory newCommandFactory = recurse();
+				value = newCommandFactory.returnValue();
+				getCommandList().addAll(newCommandFactory.getCommandList());
+			}
+			inputTokens.remove(0);
 			break;
 
 		case "MAKE":
@@ -325,16 +404,20 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 	}
 
 	protected commandFactory recurse() {
-		return new commandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap);
+		return new commandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap,
+				this.commandListMap);
 	}
 
 	protected commandFactory recurseList(String listType) {
-		return new commandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap, listType);
+		return new commandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap,
+				this.commandListMap, listType);
 	}
 
 	private void buildList(String listType) {
 		String previousToken = inputTokens.get(0);
-		if(listType.equals(TO)){ inputTokens.remove(0); }
+		if (listType.equals(TO)) {
+			inputTokens.remove(0);
+		}
 
 		if (listType.equals(DO)) {
 			inputTokens.remove(0);
@@ -343,22 +426,14 @@ public class commandFactory implements returnsCommandList, returnsVariableList, 
 			variableMap.put(indexVariable, indexStart);
 		}
 
-		if (listType.equals(FOR)) {
-			inputTokens.remove(0);
-			indexVariable = inputTokens.remove(0);
-			Constant indexStart = new Constant((int) recurse().returnValue());
-			variableMap.put(indexVariable, indexStart);
-			getVariableList().add(indexStart);
-		}
-
 		while (!previousToken.equals("]") && inputTokens.size() > 0) {
 			previousToken = inputTokens.get(0);
 			if (listType.equals(COMMAND)) {
 				getCommandList().addAll(recurse().getCommandList());
 			} else if (listType.equals(TO)) {
-				if(previousToken.equals("]")) {
+				if (previousToken.equals("]")) {
 					inputTokens.remove(0);
-					return; 
+					return;
 				}
 				variableMap.put(inputTokens.remove(0), new Constant((int) recurse().returnValue()));
 			} else {

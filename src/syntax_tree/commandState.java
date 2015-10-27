@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import Parser.ParserCommand;
 import SLOGO.CommandFactory;
 
-public class commandState {
+public class commandState{
 	ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
 	CommandFactory commandObjectFactory = new CommandFactory(); 
 	

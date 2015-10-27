@@ -13,7 +13,7 @@ public class SyntaxTree {
 	private ArrayList<String> inputCommands = new ArrayList<String>();
 	private ArrayList<ParserCommand> outputCommands = new ArrayList<ParserCommand>();
 	private HashMap<String, returnsValue> variableMap = new HashMap<String, returnsValue>();
-	private HashMap<String, returnsCommandList> commandListMap = new HashMap<String, returnsCommandList>();
+	private HashMap<String, ArrayList<String>> commandListMap = new HashMap<String, ArrayList<String>>();
 
 	public SyntaxTree(){
 		buildCommandSet();

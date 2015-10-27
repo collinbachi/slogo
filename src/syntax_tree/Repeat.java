@@ -1,6 +1,6 @@
 package syntax_tree;
 
-public class Repeat extends commandState {
+public class Repeat extends commandState implements returnsValue{
 	
 	private double arg0;
 	
@@ -11,5 +11,11 @@ public class Repeat extends commandState {
 			getCommandList().addAll(arg1.getCommandList());
 		}
 
+	}
+
+	@Override
+	public double returnValue() {
+		// TODO Auto-generated method stub
+		return arg0;
 	}
 }

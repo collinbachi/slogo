@@ -31,6 +31,9 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 	protected final ApplicationView myApplicationView; 
 
 	private final DrawView myDrawView;
+	
+	private SLOGOScanner scanner;
+	private SyntaxTree syntaxTree;
 
 
 	public ParseAndDrawSection (SLOGOManager manager) {
@@ -41,6 +44,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		// And needs to be split up into different classes, the application won't need to be rewritten		
 		myDrawView = new ParseAndDrawDrawView(myView, this);
 		myApplicationView = new ParseAndDrawApplicationView(myView, this);
+		syntaxTree = new SyntaxTree();
 		
 		//myParser = new SLOGOScanner(this); // ?
 		
@@ -55,15 +59,14 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 	}
 
 	public void parseText(String text) {
-
-		SLOGOScanner scanner = new SLOGOScanner(text);
-		SyntaxTree syntaxTree = new SyntaxTree();
+		scanner = new SLOGOScanner(text);
 		
 		while(scanner.hasNext()){
 			String temp = scanner.next();
 			System.out.println(temp);
 			syntaxTree.appendToInput(temp);
 		}
+		//System.out.println(syntaxTree.parseTokens());
 		myDrawable.addAnimationsToQueue(syntaxTree.parseTokens());
 		myDrawable.animate();
 	}

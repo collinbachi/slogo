@@ -8,6 +8,7 @@ import turtle_queries.*;
 public class CommandFactory {
 
 	public ParserCommand getCommand(String input){
+		System.out.println(input);
 		if(input.equals("PENDOWN")){
 			return new PenDownCommand();
 		}else if(input.equals("SHOWTURTLE")){
@@ -32,6 +33,7 @@ public class CommandFactory {
 	}
 
 	public ParserCommand getCommand(String input, double arg0) {
+		System.out.println(input);
 		if (input.equals("FORWARD")) {
 			return new ForwardCommand(arg0);
 		} else if (input.equals("BACK")) {
@@ -48,6 +50,7 @@ public class CommandFactory {
 	}
 
 	public ParserCommand getCommand(String input, double arg0, double arg1) {
+		System.out.println(input);
 		if (input.equals("TOWARDS")) {
 			return new TowardsCommand(arg0, arg1);
 		} else if(input.equals("SETXY")){
