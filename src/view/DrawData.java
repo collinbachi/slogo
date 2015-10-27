@@ -2,6 +2,7 @@ package view;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -126,6 +127,22 @@ public class DrawData extends ParseAndDrawDrawView {
 			paint();
 			isDrawing = true;
 		}
+		
+		if (isActive) {
+			 int depth = 70; //Setting the uniform variable for the glow width and height
+			 
+			DropShadow borderGlow= new DropShadow();
+			borderGlow.setOffsetY(0f);
+			borderGlow.setOffsetX(0f);
+			borderGlow.setColor(Color.RED);
+			borderGlow.setWidth(depth);
+			borderGlow.setHeight(depth);
+			  
+			myObject.setEffect(borderGlow); //Apply the borderGlow effect to the JavaFX node
+        }
+        else {
+       	 	myObject.setEffect(null);
+        }
 	}
 	
 	public void initObject(String filename, double x, double y, double orientation) {
