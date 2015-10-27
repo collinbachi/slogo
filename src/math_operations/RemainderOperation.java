@@ -1,7 +1,7 @@
 package math_operations;
 
-import Drawable.Drawable;
-import Parser.ParserCommand;
+import drawable.Drawable;
+import parser.ParserCommand;
 
 public class RemainderOperation implements ParserCommand {
 	private double expr1;

@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class DoTimes extends commandState {
 
-	public DoTimes(commandFactory arg0, commandFactory arg1, Map<String, returnsValue> variableMap,
+	public DoTimes(TreeCommandFactory arg0, TreeCommandFactory arg1, Map<String, returnsValue> variableMap,
 			List<String> inputTokens) {
 		String indexVariable = arg0.getIndexVariable();
 		ArrayList<String> inputTokensCopy = new ArrayList<String>();

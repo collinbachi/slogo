@@ -1,8 +1,8 @@
 package turtle_commands;
 import java.util.HashSet;
 
-import Drawable.Drawable;
-import Parser.ParserCommand;
+import drawable.Drawable;
+import parser.ParserCommand;
 
 public class ForwardCommand implements ParserCommand {
 	private double distance;
