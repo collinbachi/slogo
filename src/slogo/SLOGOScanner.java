@@ -12,7 +12,7 @@ public class SLOGOScanner implements Iterable<Token>{
 	private String[] contents;
 
 	public SLOGOScanner(String input){
-		rawContents = input.substring(1, input.length()-1);
+		rawContents = input;//.substring(1, input.length()-1);
 		contents = rawContents.split("\\s+");
 	}
 	
