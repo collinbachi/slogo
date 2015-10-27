@@ -80,7 +80,8 @@ public class ParseAndDrawApplicationView extends ConcreteView implements Applica
 	}
 
 	private void handleButtonEvaluate() {
-		String text = parserText.getParagraphs().toString();
+		String text = parserText.getText();
+		System.out.println(text);
 		parserText.clear();
 		myClient.parseText(text);
 	}

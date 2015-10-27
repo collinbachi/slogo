@@ -116,27 +116,27 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			commandListMap.put(commandName, recurse());
 			break;
 
-		case "FD":
+		case "FORWARD":
 			Forward newForward = new Forward(recurse());
 			getCommandList().addAll(newForward.getCommandList());
 			break;
 			
-		case "BK":
+		case "BACK":
 			Back newBack = new Back(recurse());
 			getCommandList().addAll(newBack.getCommandList());
 			break;
 			
-		case "LT":
+		case "LEFT":
 			Left newLeft = new Left(recurse());
 			getCommandList().addAll(newLeft.getCommandList());
 			break;
 			
-		case "RT":
+		case "RIGHT":
 			Right newRight = new Right(recurse());
 			getCommandList().addAll(newRight.getCommandList());
 			break;
 
-		case "SETH":
+		case "SETHEADING":
 			SetHeading newSetHeading = new SetHeading(recurse());
 			getCommandList().addAll(newSetHeading.getCommandList());
 			break;
@@ -201,7 +201,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			getCommandList().addAll(newShowing.getCommandList());
 			break;
 			
-		case "[":
+		case "LBRACKET":
 			// TODO: Create a list class?
 			buildList(COMMAND);
 			break;
@@ -215,7 +215,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			value = variableMap.get(inputTokens.get(0)).returnValue();
 			break;
 
-		case "]":
+		case "RBRACKET":
 			break;
 		}
 	}
@@ -283,19 +283,19 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 
 	private void createBoolean(String currentInput) {
 		switch (currentInput) {
-		case "LESSP":
+		case "LESS?":
 			value = new Lessp(recurse(), recurse()).returnValue();
 			break;
 
-		case "GREATERP":
+		case "GREATER?":
 			value = new Greaterp(recurse(), recurse()).returnValue();
 			break;
 
-		case "EQUALP":
+		case "EQUAL?":
 			value = new Equalp(recurse(), recurse()).returnValue();
 			break;
 
-		case "NOTEQUALP":
+		case "NOTEQUAL?":
 			value = new Notequalp(recurse(), recurse()).returnValue();
 			break;
 
@@ -314,6 +314,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 	}
 
 	private void createConstant(String currentInput) {
+		System.out.println("give me a break... " + currentInput);
 		try {
 			int num = Integer.parseInt(currentInput);
 			value = new Constant(num).returnValue();
@@ -351,12 +352,12 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			getVariableList().add(indexStart);
 		}
 
-		while (!previousToken.equals("]") && inputTokens.size() > 0) {
+		while (!previousToken.equals("LBRACKET") && inputTokens.size() > 0) {
 			previousToken = inputTokens.get(0);
 			if (listType.equals(COMMAND)) {
 				getCommandList().addAll(recurse().getCommandList());
 			} else if (listType.equals(TO)) {
-				if(previousToken.equals("]")) {
+				if(previousToken.equals("RBRACKET")) {
 					inputTokens.remove(0);
 					return; 
 				}

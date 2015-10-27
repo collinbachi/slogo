@@ -1,6 +1,7 @@
 package client;
 
 import syntax_tree.SyntaxTree;
+
 import view.ApplicationView;
 import view.DrawView;
 import view.ParseAndDrawApplicationView;
@@ -14,6 +15,7 @@ import java.util.List;
 import parser.ParserCommand;
 import slogo.SLOGOManager;
 import slogo.SLOGOScanner;
+import slogo.Token;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
@@ -60,8 +62,10 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		SLOGOScanner scanner = new SLOGOScanner(text);
 		SyntaxTree syntaxTree = new SyntaxTree();
 		
-		while(scanner.hasNext()){
-			String temp = scanner.next();
+		//while(scanner.hasNext()){
+		for (Token t : scanner){
+			String temp = t.toString();
+			if (temp=="NUMBER") temp = Integer.toString(t.getNumber());
 			System.out.println(temp);
 			syntaxTree.appendToInput(temp);
 		}
