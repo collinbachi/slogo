@@ -1,12 +1,15 @@
 package syntax_tree;
 
+import client.ParserClient;
+
 public class Forward extends commandState implements returnsValue {
 	
 	private double arg0;
 
-	public Forward(returnsValue arg0){
+	public Forward(ParserClient parserClient, returnsValue arg0){
+		super(parserClient);
 		this.arg0 = arg0.returnValue();
-		appendToCommandList(parserCommandFactory.getCommand("FORWARD", this.arg0));
+		parserClient.postCommand(parserCommandFactory.getCommand("FORWARD", this.arg0));
 	}
 
 	@Override

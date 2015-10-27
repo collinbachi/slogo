@@ -5,15 +5,16 @@ import java.util.Iterator;
 
 public class SLOGOScanner implements Iterable<Token>{
 	
-	//http://stackoverflow.com/questions/604424/convert-a-string-to-an-enum-in-java
-	//http://blog.strongminds.dk/post/2012/11/30/Writing-a-small-parser-interpreter-(Part-1).aspx
+	// Referenced the following during early development:
+	// http://stackoverflow.com/questions/604424/convert-a-string-to-an-enum-in-java
+	// http://blog.strongminds.dk/post/2012/11/30/Writing-a-small-parser-interpreter-(Part-1).aspx
 	
 
 	private final String rawContents;
 	private String[] contents;
 
 	public SLOGOScanner(String input){
-		rawContents = input;//.substring(1, input.length()-1);
+		rawContents = input;
 		contents = rawContents.split("\\s+");
 	}
 	
@@ -34,10 +35,6 @@ public class SLOGOScanner implements Iterable<Token>{
 		}
 		
 		public Token next(){
-			/*if (index==contents.length){
-				index++;
-			    return Token.fromString("EOF");
-			}*/
 			String word = contents[index].toUpperCase();
 			index++;
 			try{

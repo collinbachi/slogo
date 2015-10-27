@@ -18,22 +18,22 @@ public class DrawableSet {
 		return new Turtle(board);
 	}
 
-	public DrawableSet(DrawingBoard board, Drawable obj) {
+	public DrawableSet(DrawingBoard board) {
 		myBoard = board;
 		myObjs = new HashMap<>();
-		myObjs.put(1, obj);
 		myActive = new ArrayList<>();
-		myActive.add(1);
-	}
-	
-	public DrawableSet(DrawingBoard board) {
-		this(board, getNewDrawable(board));
 	}
 	
 	public DrawableSet(DrawingBoard board, Map<Integer, Drawable> objs) {
 		myBoard = board;
 		myObjs = objs;
 		myActive = (List<Integer>) objs.keySet();
+	}
+	
+	public void makeFirst() {
+		myActive.add(1);
+		myObjs.put(1, getNewDrawable(myBoard));
+		myObjs.get(1).draw();
 	}
 	
 	public List<Drawable> setActive(List<Integer> actives) {
@@ -43,6 +43,7 @@ public class DrawableSet {
 		for(int i : myActive) {
 			if (!myObjs.containsKey(i)) {
 				myObjs.put(i, getNewDrawable(myBoard));
+				myObjs.get(i).draw();
 			}
 			else {
 				toReturn.add(myObjs.get(i));
@@ -72,4 +73,12 @@ public class DrawableSet {
 		return (List<Drawable>) myObjs.values();
 	}
 	
+	public int getIndex(Drawable obj) {
+		for (int i: myObjs.keySet()) {
+			if (myObjs.get(i).equals(obj)) {
+				return i;
+			}
+		}
+		return -1;
+	}
 }

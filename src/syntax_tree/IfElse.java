@@ -1,9 +1,12 @@
 package syntax_tree;
 
+import client.ParserClient;
+
 public class IfElse extends commandState implements returnsValue{
 	
 	private returnsValue arg0;
-	public IfElse(returnsValue arg0, returnsCommandList arg1, returnsCommandList arg2){
+	public IfElse(ParserClient parserClient, returnsValue arg0, returnsCommandList arg1, returnsCommandList arg2){
+		super(parserClient);
 		this.arg0 = arg0;
 		if(arg0.returnValue() == 1){
 			getCommandList().addAll(arg1.getCommandList());

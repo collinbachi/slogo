@@ -9,7 +9,7 @@ import java.util.Set;
 import client.ParserClient;
 import parser.ParserCommand;
 
-public class TreeCommandFactory implements returnsCommandList, returnsVariableList, returnsValue {
+public class TreeCommandFactory implements returnsCommandList, returnsValue {
 	private ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
 	private ArrayList<Constant> variableList = new ArrayList<Constant>();
 	private double value;
@@ -77,11 +77,13 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			while(!inputTokens.get(0).equals("RBRACKET")){
 				actives.add((int)recurse().returnValue());
 			}
-			parserClient.setActives(actives);
+			inputTokens.remove(0);
+			value = parserClient.setActives(actives);
+			break;
 
 		case "REPEAT":
-			Repeat newRepeat = new Repeat(recurse(), recurse());
-			getCommandList().addAll(newRepeat.getCommandList());
+			//Repeat newRepeat = new Repeat(recurse(), recurse());
+			//getCommandList().addAll(newRepeat.getCommandList());
 			break;
 
 		case "DOTIMES":
@@ -147,12 +149,12 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			break;
 
 		case "IF":
-			If newIf = new If(recurse(), recurse());
+			If newIf = new If(parserClient, recurse(), recurse());
 			getCommandList().addAll(newIf.getCommandList());
 			break;
 
 		case "IFELSE":
-			IfElse newIfElse = new IfElse(recurse(), recurse(), recurse());
+			IfElse newIfElse = new IfElse(parserClient, recurse(), recurse(), recurse());
 			getCommandList().addAll(newIfElse.getCommandList());
 			break;
 
@@ -174,22 +176,22 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			break;
 
 		case "FORWARD":
-			Forward newForward = new Forward(recurse());
+			Forward newForward = new Forward(parserClient, recurse());
 			getCommandList().addAll(newForward.getCommandList());
 			break;
 
 		case "BK":
-			Back newBack = new Back(recurse());
+			Back newBack = new Back(parserClient, recurse());
 			getCommandList().addAll(newBack.getCommandList());
 			break;
 
 		case "LT":
-			Left newLeft = new Left(recurse());
+			Left newLeft = new Left(parserClient, recurse());
 			getCommandList().addAll(newLeft.getCommandList());
 			break;
 
 		case "RT":
-			Right newRight = new Right(recurse());
+			Right newRight = new Right(parserClient, recurse());
 			getCommandList().addAll(newRight.getCommandList());
 			break;
 
@@ -224,12 +226,12 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			break;
 
 		case "HIDETURTLE":
-			HideTurtle newHideTurtle = new HideTurtle();
+			HideTurtle newHideTurtle = new HideTurtle(parserClient);
 			getCommandList().addAll(newHideTurtle.getCommandList());
 			break;
 
 		case "HOME":
-			Home newHome = new Home();
+			Home newHome = new Home(parserClient);
 			getCommandList().addAll(newHome.getCommandList());
 			break;
 
@@ -244,7 +246,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			break;
 
 		case "HEADING?":
-			Heading newHeading = new Heading();
+			Heading newHeading = new Heading(parserClient);
 			getCommandList().addAll(newHeading.getCommandList());
 			break;
 
@@ -273,7 +275,6 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			variableMap.put(inputTokens.remove(0), new Constant((int) recurse().returnValue()));
 			break;
 
-		// TODO: How will values be "returned"?
 		case "SET":
 			value = variableMap.get(inputTokens.get(0)).returnValue();
 			break;
@@ -392,35 +393,6 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 		return new TreeCommandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap, this.parserClient);
 	}
 
-	private void buildList(String listType) {
-		String previousToken = inputTokens.get(0);
-		if (listType.equals(TO)) {
-			inputTokens.remove(0);
-		}
-
-		if (listType.equals(DO)) {
-			inputTokens.remove(0);
-			indexVariable = inputTokens.remove(0);
-			Constant indexStart = new Constant(1);
-			variableMap.put(indexVariable, indexStart);
-		}
-
-		while (!previousToken.equals("LBRACKET") && inputTokens.size() > 0) {
-			previousToken = inputTokens.get(0);
-			if (listType.equals(COMMAND)) {
-				getCommandList().addAll(recurse().getCommandList());
-			} else if (listType.equals(TO)) {
-				if (previousToken.equals("]")) {
-					inputTokens.remove(0);
-					return;
-				}
-				variableMap.put(inputTokens.remove(0), new Constant((int) recurse().returnValue()));
-			} else {
-				getVariableList().add(new Constant((int) recurse().returnValue()));
-			}
-		}
-	}
-
 	public void resolveVariable(String currentInput) {
 		String key = currentInput.substring(1);
 		value = variableMap.get(key).returnValue();
@@ -428,32 +400,17 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 
 	@Override
 	public ArrayList<ParserCommand> getCommandList() {
-		// TODO Auto-generated method stub
 		return commandList;
 	}
 
 	@Override
 	public void appendToCommandList(ParserCommand command) {
-		// TODO Auto-generated method stub
 		commandList.add(command);
 	}
 
 	@Override
 	public double returnValue() {
-		// TODO Auto-generated method stub
 		return value;
-	}
-
-	@Override
-	public ArrayList<Constant> getVariableList() {
-		// TODO Auto-generated method stub
-		return variableList;
-	}
-
-	@Override
-	public void appendToVariableList(Constant c) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public String getIndexVariable() {

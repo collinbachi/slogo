@@ -1,14 +1,15 @@
 package syntax_tree;
 
-import slogo.ParserCommandFactory;
+import client.ParserClient;
 
 public class Back extends commandState implements returnsValue{
 	
 	private double arg0;
 	
-	public Back(returnsValue arg0){
+	public Back(ParserClient parserClient, returnsValue arg0){
+		super(parserClient);
 		this.arg0 = arg0.returnValue();
-		appendToCommandList(parserCommandFactory.getCommand("BACK", this.arg0));
+		parserClient.postCommand(parserCommandFactory.getCommand("BACK", this.arg0));
 	}
 
 	@Override
