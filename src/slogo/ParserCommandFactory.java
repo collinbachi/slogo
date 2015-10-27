@@ -1,7 +1,6 @@
 package slogo;
 
 import parser.ParserCommand;
-import slogo.SLOGOScanner.Token;
 import turtle_commands.*;
 import turtle_queries.*;
 
@@ -10,23 +9,38 @@ public class ParserCommandFactory {
 	public ParserCommand getCommand(String input){
 		if(input.equals("PENDOWN")){
 			return new PenDownCommand();
-		}else if(input.equals("SHOWTURTLE")){
+		}
+		else if(input.equals("PENUP")){
+			return new PenUpCommand();
+		}
+		else if(input.equals("SHOWTURTLE")){
 			return new ShowTurtleCommand();
-		}else if(input.equals("HIDETURTLE")){
+		}
+		else if(input.equals("HIDETURTLE")){
 			return new HideTurtleCommand();
-		}else if(input.equals("HOME")){
+		}
+		else if(input.equals("HOME")){
 			return new HomeCommand();
-		}else if(input.equals("XCOR?")){
+		}
+		else if(input.equals("CLEARSCREEN")){
+			return new ClearScreenCommand();
+		}
+		else if(input.equals("XCOR?")){
 			return new XCorQuery();
-		}else if(input.equals("YCOR?")){
+		}
+		else if(input.equals("YCOR?")){
 			return new YCorQuery();
-		}else if(input.equals("SHOWING?")){
+		}
+		else if(input.equals("SHOWING?")){
 			return new ShowingQuery();
-		}else if(input.equals("PENDOWN?")){
+		}
+		else if(input.equals("PENDOWN?")){
 			return new PenDownQuery();
-		}else if(input.equals("HEADING?")){
+		}
+		else if(input.equals("HEADING?")){
 			return new HeadingQuery();
-		}else{
+		}
+		else{
 			return null;
 		}
 	}
