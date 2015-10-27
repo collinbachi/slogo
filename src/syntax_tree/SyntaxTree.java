@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import Parser.ParserCommand;
+import parser.ParserCommand;
 
 public class SyntaxTree {
 
@@ -26,7 +26,7 @@ public class SyntaxTree {
 	}
 
 	public ArrayList<ParserCommand> parseTokens(){
-		commandFactory command = new commandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap, commandListMap);
+		TreeCommandFactory command = new TreeCommandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap, commandListMap);
 		outputCommands.addAll(command.getCommandList());
 		//System.out.println(outputCommands.toString());
 		return outputCommands;
@@ -131,22 +131,22 @@ public class SyntaxTree {
 		commandSet.add("DOTIMES");
 		commandSet.add("MAKE");
 		commandSet.add("SET");
-		commandSet.add("[");// Indicates
-		commandSet.add("]");// Indicates
-		commandSet.add("FD");// Forward
-		commandSet.add("BK");// Back
-		commandSet.add("LT");// Left
-		commandSet.add("RT");// Right
-		commandSet.add("SETH");// Set Heading
+		commandSet.add("LBRACKET");// Indicates
+		commandSet.add("RBRACKET");// Indicates
+		commandSet.add("FORWARD");// Forward
+		commandSet.add("BACK");// Back
+		commandSet.add("LEFT");// Left
+		commandSet.add("RIGHT");// Right
+		commandSet.add("SETHEADING");// Set Heading
 		commandSet.add("TOWARDS");
 		commandSet.add("SETXY");
 		commandSet.add("GOTO");
-		commandSet.add("PD");// Pen down
-		commandSet.add("PU");// Pen up
-		commandSet.add("ST");// Show turtle
-		commandSet.add("HT");// Hide turtle
+		commandSet.add("PENDOWN");// Pen down
+		commandSet.add("PENUP");// Pen up
+		commandSet.add("SHOWTURTLE");// Show turtle
+		commandSet.add("HIDETURTLE");// Hide turtle
 		commandSet.add("HOME");
-		commandSet.add("CS");// Clear screen
+		commandSet.add("CLEARSCREEN");// Clear screen
 
 	}
 
@@ -172,10 +172,10 @@ public class SyntaxTree {
 	private void buildBooleanSet() {
 
 		// Boolean Operations
-		booleanSet.add("LESSP");
-		booleanSet.add("GREATERP");
-		booleanSet.add("EQUALP");
-		booleanSet.add("NOTEQUALP");
+		booleanSet.add("LESS?");
+		booleanSet.add("GREATER?");
+		booleanSet.add("EQUAL?");
+		booleanSet.add("NOTEQUAL?");
 		booleanSet.add("AND");
 		booleanSet.add("OR");
 		booleanSet.add("NOT");

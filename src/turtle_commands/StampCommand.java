@@ -1,12 +1,13 @@
 package turtle_commands;
 
-import Drawable.Drawable;
-import Parser.ParserCommand;
+import drawable.Drawable;
+import parser.ParserCommand;
 
 public class StampCommand implements ParserCommand {
 
 	@Override
 	public double set(Drawable obj) {
+//		instance.stampSet.addStamp(obj.getX(), obj.getY(), obj.getShape());
 		return obj.getShape();
 	}
 
@@ -14,5 +15,4 @@ public class StampCommand implements ParserCommand {
 	public void draw(Drawable obj) {
 		obj.drawStamp();
 	}
-
 }

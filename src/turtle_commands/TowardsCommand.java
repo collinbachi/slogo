@@ -1,7 +1,7 @@
 package turtle_commands;
 
-import Drawable.Drawable;
-import Parser.ParserCommand;
+import drawable.Drawable;
+import parser.ParserCommand;
 
 public class TowardsCommand implements ParserCommand {
 	private double x;
@@ -22,8 +22,7 @@ public class TowardsCommand implements ParserCommand {
 
 	@Override
 	public void draw(Drawable obj) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method
 		obj.drawTowards(x, y);
-		
 	}
 }
