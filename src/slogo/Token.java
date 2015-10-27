@@ -39,6 +39,12 @@ public class Token {
 			aliases.put("EQUALP", "EQUAL?");
 			aliases.put("NOTEQUALP", "NOTEQUAL?");
 			aliases.put("SET", "MAKE");
+			aliases.put("SETBG", "SETBACKGROUND");
+			aliases.put("SETPC", "SETPENCOLOR");
+			aliases.put("SETPS", "SETPENSIZE");
+			aliases.put("SETSH", "SETSHAPE");
+			aliases.put("PC", "PENCOLOR");
+			aliases.put("SH", "SHAPE");
 
 			try {
 				File[] files = new File("resources/languages").listFiles();
@@ -160,6 +166,20 @@ public class Token {
 			TO("TO"),
 			NUMBER("NUMBER"),
 			SYMBOL("SYMBOL"),
+			SETBACKGROUND("SETBACKGROUND"),
+			SETPENCOLOR("SETPENCOLOR"),
+			SETPENSIZE("SETPENSIZE"),
+			SETSHAPE("SETSHAPE"),
+			SETPALETTE("SETPALETTE"),
+			PENCOLOR("PENCOLOR"),
+			SHAPE("SHAPE"),
+			STAMP("STAMP"),
+			CLEARSTAMPS("CLEARSTAMPS"),
+			ID("ID"),
+			TURTLES("TURTLES"),
+			TELL("TELL"),
+			ASK("ASK"),
+			ASKWITH("ASKWITH"),
 			EOF("EOF");
 	
 			private String text;

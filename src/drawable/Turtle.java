@@ -99,8 +99,8 @@ public class Turtle implements Drawable {
 
 	@Override
 	public double setTowards(double x, double y) {
-		// TODO DO LATER!
-		return 0;
+		myHeading = Math.atan((y-myY)/(x-myX))*57.3;
+		return myHeading;
 	}
 	
 	@Override
