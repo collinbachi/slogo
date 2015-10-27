@@ -3,6 +3,9 @@ package Client;
 import syntax_tree.SyntaxTree;
 import Drawable.Drawable;
 import Drawable.Turtle;
+
+import java.util.List;
+
 import Drawable.DrawCommand;
 import Drawable.DrawRequest;
 import Parser.ParserCommand;
@@ -22,7 +25,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 
 	// Sub-applications
 
-	private Drawable myDrawable;
+	private DrawableSet myDrawables;
 
 	//private SLOGOScanner myParser; //Unsure what type this should be, may change.
 
@@ -44,7 +47,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		
 		//myParser = new SLOGOScanner(this); // ?
 		
-		myDrawable = new Turtle(this);
+		myDrawables = new DrawableSet(this);
 
 	}
 
@@ -64,32 +67,62 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 			System.out.println(temp);
 			syntaxTree.appendToInput(temp);
 		}
-		myDrawable.addAnimationsToQueue(syntaxTree.parseTokens());
-		myDrawable.animate();
+		for (Drawable obj: myDrawables.getActiveObjs()) {
+			obj.addAnimationsToQueue(syntaxTree.parseTokens());
+		}
+		for (Drawable obj: myDrawables.getActiveObjs()) {
+			obj.animate();
+		}
+	}
+	
+	//Returns the last int in the list
+	public int setActives(List<Integer> actives) {
+		myDrawables.setActive(actives);
+		return actives.get(actives.size() - 1);
+	}
+	
+	//Returns the last int in the active list
+	public int getLastActive() {
+		List<Integer> actives = myDrawables.getActiveInt();
+		return actives.get(actives.size() - 1);
 	}
 
 	public double getX() {
-		return myDrawable.getX();
+		return myDrawables.getLastActive().getX();
 	}
 
 	public double getY() {
-		return myDrawable.getY();
+		return myDrawables.getLastActive().getY();
 	}
 
 	public double getHeading() {
-		return myDrawable.getHeading();
+		return myDrawables.getLastActive().getHeading();
 	}
 
 	public Boolean getPenUp() {
-		return myDrawable.getPenUp();
+		return myDrawables.getLastActive().getPenUp();
 	}
 
 	public Boolean getShowing() {
-		return myDrawable.getShowing();
+		return myDrawables.getLastActive().getShowing();
 	}
 
 	public double postCommand(ParserCommand cmd) {
-		return myDrawable.runCommand(cmd);
+		double ret = 0;
+		List<Drawable> iter = myDrawables.getActiveObjs();
+		for (int i = 0; i < iter.size(); i++ ) {
+			ret = iter.get(i).runCommand(cmd);
+		}
+		return ret;
+	}
+	
+	public double postCommandToAll(ParserCommand cmd) {
+		double ret = 0;
+		List<Drawable> iter = myDrawables.getAll();
+		for (int i = 0; i < iter.size(); i++) {
+			ret = iter.get(i).runCommand(cmd);
+		}
+		return ret;
 	}
 
 	public void setPenColor(Color color) {
