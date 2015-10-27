@@ -1,8 +1,10 @@
 package syntax_tree;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import client.ParserClient;
 import parser.ParserCommand;
 
 public class SyntaxTree {
@@ -15,110 +17,114 @@ public class SyntaxTree {
 	private HashMap<String, returnsValue> variableMap = new HashMap<String, returnsValue>();
 	private HashMap<String, ArrayList<String>> commandListMap = new HashMap<String, ArrayList<String>>();
 
-	public SyntaxTree(){
+	public SyntaxTree() {
 		buildCommandSet();
 		buildMathSet();
 		buildBooleanSet();
 	}
-	
-	public void appendToInput(String input){
+
+	public void appendToInput(String input) {
 		inputCommands.add(input);
 	}
 
-	public ArrayList<ParserCommand> parseTokens(){
-		TreeCommandFactory command = new TreeCommandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap, commandListMap);
-		outputCommands.addAll(command.getCommandList());
-		//System.out.println(outputCommands.toString());
+	public ArrayList<ParserCommand> parseTokens(ParserClient parserClient) {
+		while (!inputCommands.isEmpty()) {
+			TreeCommandFactory command = new TreeCommandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap, commandListMap, parserClient);
+			outputCommands.addAll(command.getCommandList());
+		}
 		return outputCommands;
 	}
-	
-	//public static void main(String[] args) {
-	//	buildCommandSet();
-	//	buildMathSet();
-	//	buildBooleanSet();
 
-	//	HashMap<String, returnsValue> variableMap = new HashMap<String, returnsValue>();
-	//	HashMap<String, returnsCommandList> commandListMap = new HashMap<String, returnsCommandList>();
-	//	ArrayList<String> inputCommands = new ArrayList<String>();
-	//	ArrayList<String> outputCommands = new ArrayList<String>();
-	//	
-	//	inputCommands.add("TO");
-	//	inputCommands.add("commandVar");
-	//	inputCommands.add("[");
-	//	inputCommands.add("A");
-	//	inputCommands.add("1");
-	//	inputCommands.add("B");
-	//	inputCommands.add("4");
-	//	inputCommands.add("]");
-	//	inputCommands.add("[");
-	//	inputCommands.add("FD");
-	//	inputCommands.add("SUM");
-	//	inputCommands.add("A");
-	//	inputCommands.add("B");
-	//	inputCommands.add("]");
-	//	inputCommands.add("commandVar");
+	// public static void main(String[] args) {
+	// buildCommandSet();
+	// buildMathSet();
+	// buildBooleanSet();
 
-	//	//inputCommands.add("DOTIMES");
-	//	//inputCommands.add("[");
-	//	//inputCommands.add("INDEX");
-	//	//inputCommands.add("6");
-	//	//inputCommands.add("]");
-	//	//inputCommands.add("[");
-	//	//inputCommands.add("FD");
-	//	//inputCommands.add("INDEX");
-	//	//inputCommands.add("]");
+	// HashMap<String, returnsValue> variableMap = new HashMap<String,
+	// returnsValue>();
+	// HashMap<String, returnsCommandList> commandListMap = new HashMap<String,
+	// returnsCommandList>();
+	// ArrayList<String> inputCommands = new ArrayList<String>();
+	// ArrayList<String> outputCommands = new ArrayList<String>();
+	//
+	// inputCommands.add("TO");
+	// inputCommands.add("commandVar");
+	// inputCommands.add("[");
+	// inputCommands.add("A");
+	// inputCommands.add("1");
+	// inputCommands.add("B");
+	// inputCommands.add("4");
+	// inputCommands.add("]");
+	// inputCommands.add("[");
+	// inputCommands.add("FD");
+	// inputCommands.add("SUM");
+	// inputCommands.add("A");
+	// inputCommands.add("B");
+	// inputCommands.add("]");
+	// inputCommands.add("commandVar");
 
-	//	//inputCommands.add("MAKE");
-	//	//inputCommands.add("VAR");
-	//	//inputCommands.add("3");
-	//	//inputCommands.add("FOR");
-	//	//inputCommands.add("[");
-	//	//inputCommands.add("INDEX");
-	//	//inputCommands.add("1");
-	//	//inputCommands.add("1");
-	//	//inputCommands.add("1");
-	//	//inputCommands.add("]");
-	//	//inputCommands.add("[");
-	//	//inputCommands.add("FD");
-	//	//inputCommands.add("INDEX");
-	//	//inputCommands.add("FD");
-	//	//inputCommands.add("VAR");
-	//	//inputCommands.add("]");
+	// //inputCommands.add("DOTIMES");
+	// //inputCommands.add("[");
+	// //inputCommands.add("INDEX");
+	// //inputCommands.add("6");
+	// //inputCommands.add("]");
+	// //inputCommands.add("[");
+	// //inputCommands.add("FD");
+	// //inputCommands.add("INDEX");
+	// //inputCommands.add("]");
 
-	//	// inputCommands.add("IFELSE");
-	//	// inputCommands.add("GREATERP");
-	//	// inputCommands.add("3");
-	//	// inputCommands.add("1");
-	//	// inputCommands.add("[");
-	//	// inputCommands.add("FD");
-	//	// inputCommands.add("2");
-	//	// inputCommands.add("FD");
-	//	// inputCommands.add("3");
-	//	// inputCommands.add("]");
-	//	// inputCommands.add("[");
-	//	// inputCommands.add("FD");
-	//	// inputCommands.add("1");
-	//	// inputCommands.add("FD");
-	//	// inputCommands.add("3");
-	//	// inputCommands.add("]");
+	// //inputCommands.add("MAKE");
+	// //inputCommands.add("VAR");
+	// //inputCommands.add("3");
+	// //inputCommands.add("FOR");
+	// //inputCommands.add("[");
+	// //inputCommands.add("INDEX");
+	// //inputCommands.add("1");
+	// //inputCommands.add("1");
+	// //inputCommands.add("1");
+	// //inputCommands.add("]");
+	// //inputCommands.add("[");
+	// //inputCommands.add("FD");
+	// //inputCommands.add("INDEX");
+	// //inputCommands.add("FD");
+	// //inputCommands.add("VAR");
+	// //inputCommands.add("]");
 
-	//	// inputCommands.add("REPEAT");
-	//	//// inputCommands.add("3");
-	//	// inputCommands.add("PRODUCT");
-	//	// inputCommands.add("4");
-	//	// inputCommands.add("2");
-	//	// inputCommands.add("[");
-	//	// inputCommands.add("FD");
-	//	// inputCommands.add("2");
-	//	// inputCommands.add("]");
+	// // inputCommands.add("IFELSE");
+	// // inputCommands.add("GREATERP");
+	// // inputCommands.add("3");
+	// // inputCommands.add("1");
+	// // inputCommands.add("[");
+	// // inputCommands.add("FD");
+	// // inputCommands.add("2");
+	// // inputCommands.add("FD");
+	// // inputCommands.add("3");
+	// // inputCommands.add("]");
+	// // inputCommands.add("[");
+	// // inputCommands.add("FD");
+	// // inputCommands.add("1");
+	// // inputCommands.add("FD");
+	// // inputCommands.add("3");
+	// // inputCommands.add("]");
 
-	//	while (!inputCommands.isEmpty()) {
-	//		commandFactory command = new commandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap, commandListMap);
-	//		outputCommands.addAll(command.getCommandList());
-	//	}
-	//	System.out.println(outputCommands.toString());
+	// // inputCommands.add("REPEAT");
+	// //// inputCommands.add("3");
+	// // inputCommands.add("PRODUCT");
+	// // inputCommands.add("4");
+	// // inputCommands.add("2");
+	// // inputCommands.add("[");
+	// // inputCommands.add("FD");
+	// // inputCommands.add("2");
+	// // inputCommands.add("]");
 
-	//}
+	// while (!inputCommands.isEmpty()) {
+	// commandFactory command = new commandFactory(commandSet, mathSet,
+	// booleanSet, inputCommands, variableMap, commandListMap);
+	// outputCommands.addAll(command.getCommandList());
+	// }
+	// System.out.println(outputCommands.toString());
+
+	// }
 
 	private void buildCommandSet() {
 
@@ -147,6 +153,7 @@ public class SyntaxTree {
 		commandSet.add("HIDETURTLE");// Hide turtle
 		commandSet.add("HOME");
 		commandSet.add("CLEARSCREEN");// Clear screen
+		commandSet.add("TELL");// Clear screen
 
 	}
 

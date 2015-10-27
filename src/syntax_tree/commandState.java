@@ -8,7 +8,7 @@ import slogo.ParserCommandFactory;
 
 public class commandState{
 	ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
-	ParserCommandFactory commandObjectFactory = new ParserCommandFactory(); 
+	ParserCommandFactory parserCommandFactory = new ParserCommandFactory(); 
 	
 	public commandState(){
 		

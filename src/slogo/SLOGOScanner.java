@@ -1,5 +1,6 @@
 package slogo;
 
+
 import java.util.Iterator;
 
 public class SLOGOScanner implements Iterable<Token>{

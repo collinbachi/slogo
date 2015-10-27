@@ -72,7 +72,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 			syntaxTree.appendToInput(temp);
 		}
 		for (Drawable obj: myDrawables.getActiveObjs()) {
-			obj.addAnimationsToQueue(syntaxTree.parseTokens());
+			obj.addAnimationsToQueue(syntaxTree.parseTokens(this));
 		}
 		for (Drawable obj: myDrawables.getActiveObjs()) {
 			obj.animate();

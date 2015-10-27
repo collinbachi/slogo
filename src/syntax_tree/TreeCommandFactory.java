@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import client.ParserClient;
 import parser.ParserCommand;
 
 public class TreeCommandFactory implements returnsCommandList, returnsVariableList, returnsValue {
@@ -27,43 +28,17 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 	private List<String> inputTokens;
 	private Map<String, returnsValue> variableMap;
 	private Map<String, ArrayList<String>> commandListMap;
+	private ParserClient parserClient;
 
 	public TreeCommandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
-			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap, String listType) {
+			Map<String, returnsValue> variableMap, Map<String, ArrayList<String>> commandListMap, ParserClient parserClient) {
 		this.commandSet = commandSet;
 		this.mathSet = mathSet;
 		this.booleanSet = booleanSet;
 		this.inputTokens = inputTokens;
 		this.variableMap = variableMap;
 		this.commandListMap = commandListMap;
-
-		switch (listType) {
-		case COMMAND:
-			buildList(COMMAND);
-			break;
-		case VARIABLE:
-			buildList(VARIABLE);
-			break;
-		case FOR:
-			buildList(FOR);
-			break;
-		case DO:
-			buildList(DO);
-			break;
-		case TO:
-			buildList(TO);
-			break;
-		}
-	}
-
-	public TreeCommandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
-			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap) {
-		this.commandSet = commandSet;
-		this.mathSet = mathSet;
-		this.booleanSet = booleanSet;
-		this.inputTokens = inputTokens;
-		this.variableMap = variableMap;
-		this.commandListMap = commandListMap;
+		this.parserClient = parserClient;
 
 		currentInput = inputTokens.remove(0);
 
@@ -95,6 +70,15 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 		int index;
 		ArrayList<String> forTokens;
 		switch (currentInput) {
+
+		case "TELL":
+			inputTokens.remove(0); // remove '['
+			ArrayList<Integer> actives = new ArrayList<Integer>();
+			while(!inputTokens.get(0).equals("RBRACKET")){
+				actives.add((int)recurse().returnValue());
+			}
+			parserClient.setActives(actives);
+
 		case "REPEAT":
 			Repeat newRepeat = new Repeat(recurse(), recurse());
 			getCommandList().addAll(newRepeat.getCommandList());
@@ -119,7 +103,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 
 			for (int i = start; i <= end; i++) {
 				variableMap.put(indexVariable, new Constant(i));
-				commandFactory newCommandFactory = recurse();
+				TreeCommandFactory newCommandFactory = recurse();
 				value = newCommandFactory.returnValue();
 				getCommandList().addAll(newCommandFactory.getCommandList());
 				if (i + 1 <= end) {
@@ -150,7 +134,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 
 			for (int i = start; i <= end; i += increment) {
 				variableMap.put(indexVariable, new Constant(i));
-				commandFactory newCommandFactory = recurse();
+				TreeCommandFactory newCommandFactory = recurse();
 				value = newCommandFactory.returnValue();
 				getCommandList().addAll(newCommandFactory.getCommandList());
 				if (i + 1 <= end) {
@@ -274,11 +258,11 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			getCommandList().addAll(newShowing.getCommandList());
 			break;
 
-		case "[":
+		case "LBRACKET":
 			// TODO: Create a list class?
 			// buildList(COMMAND);
-			while (!inputTokens.get(0).equals("]")) {
-				commandFactory newCommandFactory = recurse();
+			while (!inputTokens.get(0).equals("RBRACKET")) {
+				TreeCommandFactory newCommandFactory = recurse();
 				value = newCommandFactory.returnValue();
 				getCommandList().addAll(newCommandFactory.getCommandList());
 			}
@@ -405,11 +389,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 	}
 
 	protected TreeCommandFactory recurse() {
-		return new TreeCommandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap);
-	}
-
-	protected TreeCommandFactory recurseList(String listType) {
-		return new TreeCommandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap, listType);
+		return new TreeCommandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap, this.parserClient);
 	}
 
 	private void buildList(String listType) {

@@ -6,7 +6,7 @@ public class Right extends commandState implements returnsValue{
 
 	public Right(returnsValue arg0){
 		this.arg0 = arg0.returnValue();
-		appendToCommandList(commandObjectFactory.getCommand("RIGHT", this.arg0));
+		appendToCommandList(parserCommandFactory.getCommand("RIGHT", this.arg0));
 	}
 
 	@Override

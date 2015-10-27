@@ -8,7 +8,7 @@ public class SetXY extends commandState implements returnsValue{
 	public SetXY(returnsValue arg0, returnsValue arg1){
 		this.arg0 = arg0.returnValue();
 		this.arg1 = arg1.returnValue();
-		appendToCommandList(commandObjectFactory.getCommand("SETXY", this.arg0, this.arg1));
+		appendToCommandList(parserCommandFactory.getCommand("SETXY", this.arg0, this.arg1));
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package slogo;
 
+
 import view.DrawView;
 
 public interface DrawCommand {

@@ -6,7 +6,7 @@ public class Forward extends commandState implements returnsValue {
 
 	public Forward(returnsValue arg0){
 		this.arg0 = arg0.returnValue();
-		appendToCommandList(commandObjectFactory.getCommand("FORWARD", this.arg0));
+		appendToCommandList(parserCommandFactory.getCommand("FORWARD", this.arg0));
 	}
 
 	@Override

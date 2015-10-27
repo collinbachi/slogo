@@ -6,7 +6,7 @@ public class SetHeading extends commandState implements returnsValue{
 	
 	public SetHeading(returnsValue arg0){
 		this.arg0 = arg0.returnValue();
-		appendToCommandList(commandObjectFactory.getCommand("SETHEADING", this.arg0));
+		appendToCommandList(parserCommandFactory.getCommand("SETHEADING", this.arg0));
 	}
 
 	@Override

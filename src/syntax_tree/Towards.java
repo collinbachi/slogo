@@ -8,7 +8,7 @@ public class Towards extends commandState implements returnsValue{
 	public Towards(returnsValue arg0, returnsValue arg1){
 		this.arg0 = arg0.returnValue();
 		this.arg1 = arg1.returnValue();
-		appendToCommandList(commandObjectFactory.getCommand("TOWARDS", this.arg0, this.arg1));
+		appendToCommandList(parserCommandFactory.getCommand("TOWARDS", this.arg0, this.arg1));
 	}
 
 	@Override
