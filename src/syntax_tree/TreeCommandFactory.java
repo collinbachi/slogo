@@ -202,7 +202,6 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			break;
 			
 		case "LBRACKET":
-			// TODO: Create a list class?
 			buildList(COMMAND);
 			break;
 
@@ -210,7 +209,6 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			variableMap.put(inputTokens.remove(0), new Constant((int) recurse().returnValue()));
 			break;
 
-		// TODO: How will values be "returned"?
 		case "SET":
 			value = variableMap.get(inputTokens.get(0)).returnValue();
 			break;
@@ -375,33 +373,26 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 
 	@Override
 	public ArrayList<ParserCommand> getCommandList() {
-		// TODO Auto-generated method stub
 		return commandList;
 	}
 
 	@Override
 	public void appendToCommandList(ParserCommand command) {
-		// TODO Auto-generated method stub
 		commandList.add(command);
 	}
 
 	@Override
 	public double returnValue() {
-		// TODO Auto-generated method stub
 		return value;
 	}
 
 	@Override
 	public ArrayList<Constant> getVariableList() {
-		// TODO Auto-generated method stub
 		return variableList;
 	}
 
 	@Override
-	public void appendToVariableList(Constant c) {
-		// TODO Auto-generated method stub
-
-	}
+	public void appendToVariableList(Constant c) {}
 
 	public String getIndexVariable() {
 		return indexVariable;
