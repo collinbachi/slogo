@@ -52,6 +52,15 @@ public class DrawableSet {
 		return toReturn;
 	}
 	
+	public Drawable get(int i) {
+		if (myObjs.containsKey(i)) {
+			return myObjs.get(i);
+		}
+		else {
+			return null;
+		}
+	}
+	
 	public List<Integer> getActiveInt() {
 		return myActive;
 	}
@@ -70,7 +79,7 @@ public class DrawableSet {
 	}
 	
 	public List<Drawable> getAll() {
-		return (List<Drawable>) myObjs.values();
+		return new ArrayList<>(myObjs.values());
 	}
 	
 	public int getIndex(Drawable obj) {

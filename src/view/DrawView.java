@@ -1,5 +1,7 @@
 package view;
 
+import java.util.List;
+
 import drawable.DrawCommand;
 import drawable.DrawRequest;
 import javafx.scene.paint.Color;
