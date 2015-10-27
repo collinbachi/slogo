@@ -1,7 +1,12 @@
 package view;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import slogo.SLOGOApplication;
 
@@ -19,17 +24,26 @@ public class DrawData extends ParseAndDrawDrawView {
 	private double myDestHeading;
 	private double mySpeed;
 	
-	private Boolean readyToDraw;
+	private Boolean readyToDraw;	
+	private Color myPenColor;
 	
+	private Boolean isDrawing;
+	private Boolean isActive;
+
 	private View myView;
 	
-	public DrawData (View view) {
+	private DrawView myDrawView;
+	
+	public DrawData (View view, DrawView drawView) {
 		myView = view;
+		myDrawView = drawView;
 		myView.addToRoot(myRoot);
 		
 		penUp = false;
 		isShowing = true;
 		readyToDraw = false;
+		isDrawing = false;
+		isActive = false;
 	}
 	
 	// Core functions
@@ -98,17 +112,37 @@ public class DrawData extends ParseAndDrawDrawView {
 	public void update() {
 		double x = getX();
 		double y = getY();
+		isDrawing = false;
 		if (Math.abs(myDestX - x) > .01 || Math.abs(myDestY - y) > .01) {
 			move();
+			isDrawing = true;
 		}
 		
 		if (Math.abs(myDestHeading - myObject.getRotate()) > .01) {
 			rotate();
+			isDrawing = true;
 		}
 		
 		if (!penUp && readyToDraw) {
 			paint();
+			isDrawing = true;
 		}
+		
+		if (isActive) {
+			 int depth = 70; //Setting the uniform variable for the glow width and height
+			 
+			DropShadow borderGlow= new DropShadow();
+			borderGlow.setOffsetY(0f);
+			borderGlow.setOffsetX(0f);
+			borderGlow.setColor(Color.RED);
+			borderGlow.setWidth(depth);
+			borderGlow.setHeight(depth);
+			  
+			myObject.setEffect(borderGlow); //Apply the borderGlow effect to the JavaFX node
+        }
+        else {
+       	 	myObject.setEffect(null);
+        }
 	}
 	
 	public void initObject(String filename, double x, double y, double orientation) {
@@ -126,6 +160,14 @@ public class DrawData extends ParseAndDrawDrawView {
 		myDestX = getX();
 		myDestY = getY();
 		myDestHeading = myObject.getRotate();
+		
+		myObject.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			
+			 @Override
+             public void handle(MouseEvent event) {
+                 isActive = !isActive;
+             }
+		});
 	}
 
 	public void drawMove(double x, double y, double speed) {
@@ -174,5 +216,17 @@ public class DrawData extends ParseAndDrawDrawView {
 
 	public double getHeading() {
 		return myObject.getRotate();
+	}
+	
+	public void setPenColor(Color color) {
+		myPenColor = color;
+	}
+	
+	public Boolean getIsDrawing() {
+		return isDrawing;
+	}
+	
+	public Boolean getIsActive() {
+		return isActive;
 	}
 }
