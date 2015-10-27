@@ -1,7 +1,7 @@
 package turtle_commands;
 
-import Drawable.Drawable;
-import Parser.ParserCommand;
+import drawable.Drawable;
+import parser.ParserCommand;
 
 public class SetPaletteCommand implements ParserCommand {
 	private double index, r, g,	b;

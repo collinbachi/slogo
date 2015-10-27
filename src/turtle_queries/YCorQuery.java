@@ -1,7 +1,7 @@
 package turtle_queries;
 
-import Drawable.Drawable;
-import Parser.ParserCommand;
+import drawable.Drawable;
+import parser.ParserCommand;
 
 public class YCorQuery implements ParserCommand {
 

@@ -1,8 +1,8 @@
 package turtle_commands;
 
-import Drawable.Drawable;
-import Parser.ParserCommand;
-import SLOGO.StampSet;
+import drawable.Drawable;
+import parser.ParserCommand;
+import slogo.StampSet;
 
 public class ClearStampsCommand implements ParserCommand {
 

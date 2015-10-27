@@ -2,8 +2,8 @@ package multiple_turtle_commands;
 
 import java.util.List;
 
-import Drawable.Drawable;
-import Parser.ParserCommand;
+import drawable.Drawable;
+import parser.ParserCommand;
 
 public class AskCommand implements ParserCommand {
 	private List<Drawable> turtles;

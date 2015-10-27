@@ -1,7 +1,7 @@
 package multiple_turtle_commands;
 
-import Drawable.Drawable;
-import Parser.ParserCommand;
+import drawable.Drawable;
+import parser.ParserCommand;
 
 public class IDCommand implements ParserCommand {
 
