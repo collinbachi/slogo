@@ -45,7 +45,7 @@ public class Token {
 				for (File f : files) System.out.println(f.toString());
 				for (File f : files){
 	
-						for (String line : Files.readAllLines(f.toPath(), StandardCharsets.US_ASCII)) {
+						for (String line : Files.readAllLines(f.toPath())) {
 							if (line.charAt(0)=='#') continue;
 							String [] parts = line.split("=");
 							parts[0] = parts[0].trim().toUpperCase();
