@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import Parser.ParserCommand;
+import parser.ParserCommand;
 
 public class SyntaxTree {
 

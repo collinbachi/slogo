@@ -1,7 +1,7 @@
-package SLOGO;
+package slogo;
 
-import Parser.ParserCommand;
-import SLOGO.SLOGOScanner.Token;
+import parser.ParserCommand;
+import slogo.SLOGOScanner.Token;
 import turtle_commands.*;
 import turtle_queries.*;
 

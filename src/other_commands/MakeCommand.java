@@ -1,8 +1,8 @@
 package other_commands;
 
-import Drawable.Drawable;
-import Parser.ParserCommand;
-import SLOGO.VariableMap;
+import drawable.Drawable;
+import parser.ParserCommand;
+import slogo.VariableMap;
 
 public class MakeCommand implements ParserCommand {
 	private String variable;

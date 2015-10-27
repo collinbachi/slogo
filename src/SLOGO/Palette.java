@@ -1,4 +1,4 @@
-package SLOGO;
+package slogo;
 
 import java.util.HashMap;
 import java.util.Map;

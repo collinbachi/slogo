@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import Parser.ParserCommand;
+import parser.ParserCommand;
 
 public class TreeCommandFactory implements returnsCommandList, returnsVariableList, returnsValue {
 	private ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
