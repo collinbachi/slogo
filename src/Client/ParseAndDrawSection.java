@@ -6,7 +6,7 @@ import Drawable.Turtle;
 import Drawable.DrawCommand;
 import Drawable.DrawRequest;
 import Parser.ParserCommand;
-import SLOGO.CommandFactory;
+import SLOGO.ParserCommandFactory;
 import SLOGO.SLOGOManager;
 import SLOGO.SLOGOScanner;
 import View.ApplicationView;

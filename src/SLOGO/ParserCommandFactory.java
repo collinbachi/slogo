@@ -5,7 +5,7 @@ import SLOGO.SLOGOScanner.Token;
 import turtle_commands.*;
 import turtle_queries.*;
 
-public class CommandFactory {
+public class ParserCommandFactory {
 
 	public ParserCommand getCommand(String input){
 		if(input.equals("PENDOWN")){

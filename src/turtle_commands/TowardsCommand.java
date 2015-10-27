@@ -22,8 +22,7 @@ public class TowardsCommand implements ParserCommand {
 
 	@Override
 	public void draw(Drawable obj) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method
 		obj.drawTowards(x, y);
-		
 	}
 }

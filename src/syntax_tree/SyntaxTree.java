@@ -26,7 +26,7 @@ public class SyntaxTree {
 	}
 
 	public ArrayList<ParserCommand> parseTokens(){
-		commandFactory command = new commandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap, commandListMap);
+		TreeCommandFactory command = new TreeCommandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap, commandListMap);
 		outputCommands.addAll(command.getCommandList());
 		//System.out.println(outputCommands.toString());
 		return outputCommands;
