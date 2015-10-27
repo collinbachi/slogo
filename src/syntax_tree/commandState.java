@@ -2,11 +2,11 @@ package syntax_tree;
 import java.util.ArrayList;
 
 import Parser.ParserCommand;
-import SLOGO.CommandFactory;
+import SLOGO.ParserCommandFactory;
 
 public class commandState {
 	ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
-	CommandFactory commandObjectFactory = new CommandFactory(); 
+	ParserCommandFactory commandObjectFactory = new ParserCommandFactory(); 
 	
 	public commandState(){
 		

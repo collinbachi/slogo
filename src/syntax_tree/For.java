@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class For extends commandState {
 
-	public For(commandFactory arg0, commandFactory arg1, Map<String, returnsValue> variableMap, List<String> inputTokens) {
+	public For(TreeCommandFactory arg0, TreeCommandFactory arg1, Map<String, returnsValue> variableMap, List<String> inputTokens) {
 		//TODO: Wrap loop variables in loop object?
 		//Constant VARIABLE = new Constant(Integer.parseInt(arg0.getIndexVariable()));
 		String indexVariable = arg0.getIndexVariable();
