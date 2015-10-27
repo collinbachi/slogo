@@ -15,5 +15,4 @@ public class Palette {
 			paletteMap.put(index, new Double[]{r, g, b});
 		}
 	}
-
 }

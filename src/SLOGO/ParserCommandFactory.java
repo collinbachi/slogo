@@ -1,7 +1,6 @@
 package slogo;
 
 import parser.ParserCommand;
-import slogo.SLOGOScanner.Token;
 import turtle_commands.*;
 import turtle_queries.*;
 
