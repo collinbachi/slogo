@@ -29,7 +29,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 	private Map<String, ArrayList<String>> commandListMap;
 
 	public TreeCommandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
-			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap, String listType) {
+			Map<String, returnsValue> variableMap, Map<String, ArrayList<String>> commandListMap, String listType) {
 		this.commandSet = commandSet;
 		this.mathSet = mathSet;
 		this.booleanSet = booleanSet;
@@ -57,7 +57,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 	}
 
 	public TreeCommandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
-			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap) {
+			Map<String, returnsValue> variableMap, Map<String, ArrayList<String>> commandListMap) {
 		this.commandSet = commandSet;
 		this.mathSet = mathSet;
 		this.booleanSet = booleanSet;
@@ -119,7 +119,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 
 			for (int i = start; i <= end; i++) {
 				variableMap.put(indexVariable, new Constant(i));
-				commandFactory newCommandFactory = recurse();
+				TreeCommandFactory newCommandFactory = recurse();
 				value = newCommandFactory.returnValue();
 				getCommandList().addAll(newCommandFactory.getCommandList());
 				if (i + 1 <= end) {
@@ -150,7 +150,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 
 			for (int i = start; i <= end; i += increment) {
 				variableMap.put(indexVariable, new Constant(i));
-				commandFactory newCommandFactory = recurse();
+				TreeCommandFactory newCommandFactory = recurse();
 				value = newCommandFactory.returnValue();
 				getCommandList().addAll(newCommandFactory.getCommandList());
 				if (i + 1 <= end) {
@@ -274,11 +274,11 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			getCommandList().addAll(newShowing.getCommandList());
 			break;
 
-		case "[":
+		case "LBRACKET":
 			// TODO: Create a list class?
 			// buildList(COMMAND);
 			while (!inputTokens.get(0).equals("]")) {
-				commandFactory newCommandFactory = recurse();
+				TreeCommandFactory newCommandFactory = recurse();
 				value = newCommandFactory.returnValue();
 				getCommandList().addAll(newCommandFactory.getCommandList());
 			}
@@ -289,7 +289,6 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			variableMap.put(inputTokens.remove(0), new Constant((int) recurse().returnValue()));
 			break;
 
-		// TODO: How will values be "returned"?
 		case "SET":
 			value = variableMap.get(inputTokens.get(0)).returnValue();
 			break;
@@ -448,33 +447,26 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 
 	@Override
 	public ArrayList<ParserCommand> getCommandList() {
-		// TODO Auto-generated method stub
 		return commandList;
 	}
 
 	@Override
 	public void appendToCommandList(ParserCommand command) {
-		// TODO Auto-generated method stub
 		commandList.add(command);
 	}
 
 	@Override
 	public double returnValue() {
-		// TODO Auto-generated method stub
 		return value;
 	}
 
 	@Override
 	public ArrayList<Constant> getVariableList() {
-		// TODO Auto-generated method stub
 		return variableList;
 	}
 
 	@Override
-	public void appendToVariableList(Constant c) {
-		// TODO Auto-generated method stub
-
-	}
+	public void appendToVariableList(Constant c) {}
 
 	public String getIndexVariable() {
 		return indexVariable;

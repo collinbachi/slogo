@@ -1,5 +1,7 @@
 package view;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import client.ParserClient;
@@ -21,21 +23,11 @@ import slogo.SLOGOApplication;
 
 public class ParseAndDrawDrawView extends ConcreteView implements DrawView {
 
-	private static final double OBJECT_HOME_X = 450;
-	private static final double OBJECT_HOME_Y = 400;
+	protected static final double OBJECT_HOME_X = 450;
+	protected static final double OBJECT_HOME_Y = 400;
 	
-	private ImageView myObject;
-	private Boolean penUp;
-	private Boolean isShowing;
-	private double myOldX;
-	private double myOldY;
-	
-	private double myDestX;
-	private double myDestY;
-	private double myDestHeading;
-	private double mySpeed;
-	
-	private Boolean readyToDraw;
+	private Map<Integer, DrawData> myObjs;
+	private int toDraw;
 
 	private Color myPenColor;
 	
@@ -50,73 +42,13 @@ public class ParseAndDrawDrawView extends ConcreteView implements DrawView {
 		baseView = view;
 		baseView.addToRoot(myRoot);
 		
-		myObject = null;
-		readyToDraw = false;
+		myObjs = new HashMap<>();
 		
 		setPenColor(Color.BLACK);
 	}
 	
-	// Core functions
-	
-	private void paint() {
-		double newX = getX();
-		double newY = getY();
-		
-		double lineStartX = myOldX + Math.cos(Math.toRadians(myObject.getRotate()))*(myObject.getBoundsInParent().getWidth() / 2);
-		double lineStartY = myOldY + Math.sin(Math.toRadians(myObject.getRotate()))*(myObject.getBoundsInParent().getHeight() / 2);
-		
-		double lineEndX = newX + Math.cos(Math.toRadians(myObject.getRotate()))*(myObject.getBoundsInParent().getWidth() / 2);
-		double lineEndY = newY + Math.sin(Math.toRadians(myObject.getRotate()))*(myObject.getBoundsInParent().getHeight() / 2);
-		
-		Line line = new Line(lineStartX, lineStartY, lineEndX, lineEndY);
-		myRoot.getChildren().add(line);
-		myOldX = getX();
-		myOldY = getY();
-		
-//		System.out.println(myOldY);
-//		System.out.println(newY);
-		
-	}
-	
-	private void move() {
-		if (myDestX != getX()) {
-			double amt = toward(myDestX, getX(), mySpeed * SLOGOApplication.SECOND_DELAY, true);
-			myObject.setX(amt);
-		}
-		
-		if (myDestY != getY()) {
-			double amt = toward(myDestY, getY(), mySpeed * SLOGOApplication.SECOND_DELAY, false);
-			myObject.setY(amt);
-		}
-	}
-	
-	private double toward(double to, double from, double amt, Boolean isX) {
-		double factor = 1;
-		if (isX) {
-			factor = Math.abs(Math.cos(Math.toRadians(90 - myObject.getRotate())));
-		}
-		else {
-			factor = Math.abs(Math.sin(Math.toRadians(90 - myObject.getRotate())));
-		}
-		if (Math.abs(to - from) <= amt + .01) {
-			return to;
-		}
-		if (to < from) {
-			return from - factor * amt;
-		}
-		return from + factor * amt;
-	}
-	
-	private void rotate() {
-		if (Math.abs(myDestHeading - myObject.getRotate()) <= .01) {
-			myObject.setRotate(myDestHeading);
-		}
-		else if (myDestHeading < myObject.getRotate()) {
-			myObject.setRotate(myObject.getRotate() - mySpeed * SLOGOApplication.SECOND_DELAY);
-		}
-		else {
-			myObject.setRotate(myObject.getRotate() + mySpeed * SLOGOApplication.SECOND_DELAY);
-		}
+	public ParseAndDrawDrawView() {
+		myClient = null;
 	}
 
 	// Override coordinates to place 0,0 at the center of the drawing board
@@ -135,91 +67,55 @@ public class ParseAndDrawDrawView extends ConcreteView implements DrawView {
 	// DrawView functions
 	
 	public void update() {
-		double x = getX();
-		double y = getY();
-		if (Math.abs(myDestX - x) > .01 || Math.abs(myDestY - y) > .01) {
-			move();
-		}
-		
-		if (Math.abs(myDestHeading - myObject.getRotate()) > .01) {
-			rotate();
-		}
-		
-		if (!penUp && readyToDraw) {
-			paint();
+		for (DrawData obj: myObjs.values()) {
+			obj.update();
 		}
 	}
 	
 	public void initObject(String filename, double x, double y, double orientation) {
-		Image objectImage = getImage(filename);
-		myObject = initImageView(objectImage, X(x + OBJECT_HOME_X), Y(y + OBJECT_HOME_Y));
-		myObject.setRotate(orientation);
-		myObject.setTranslateX(0);
-		myObject.setTranslateY(0);
-		myObject.setX(getX());
-		myObject.setY(getY());
-		myRoot.getChildren().add(myObject);
-		penUp = false;
-		isShowing = true;
-		
-		myDestX = getX();
-		myDestY = getY();
-		myDestHeading = myObject.getRotate();
-}
+		myObjs.put(toDraw, new DrawData(this));
+		myObjs.get(toDraw).initObject(filename, x, y, orientation);
+	}
 
 	public void drawMove(double x, double y, double speed) {
-	    
-	    myOldX = getX();
-	    myOldY = getY();
-	    
-	    myDestX = x;
-	    myDestY = y;
-	    mySpeed = speed;
-	    
-		readyToDraw = true;
+		myObjs.get(toDraw).drawMove(x, y, speed);
 	}
 
 	public void drawTurn(double degree, double speed) {
-		
-		myDestHeading = degree;
-		mySpeed = speed;
-
+		myObjs.get(toDraw).drawTurn(degree, speed);
 	}
 
 	public void drawPen(Boolean state) {
-		penUp = state;
+		myObjs.get(toDraw).drawPen(state);
 	}
 
 	public void drawShowing(Boolean state) {
-		myObject.setVisible(state);
+		myObjs.get(toDraw).drawShowing(state);
 	}
 
 	public void drawClear() {
-		myRoot.getChildren().clear();
-		myRoot.getChildren().add(myObject);
-		myObject.setX(X(0));
-		myObject.setY(Y(0));
-		myObject.setRotate(90);
-		
+		myObjs.get(toDraw).drawClear();
 	}
 
 	public double getX() {
-		return myObject.getX() + myObject.getTranslateX();
+		return myObjs.get(toDraw).getX();
 	}
 
 	public double getY() {
-		return myObject.getY() + myObject.getTranslateY();
+		return myObjs.get(toDraw).getY();
 	}
 
 	public double getHeading() {
-		return myObject.getRotate();
+		return myObjs.get(toDraw).getHeading();
 	}
 
-	public void executeCommand(DrawCommand cmd) {
+	public void executeCommand(int i, DrawCommand cmd) {
+		toDraw = i;
 		cmd.draw(this);
 	}
 
-	public double executeRequest(DrawRequest cmd) {
+	public double executeRequest(int i, DrawRequest cmd) {
+		toDraw = i;
 		return cmd.get(this);
 	}
 

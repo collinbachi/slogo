@@ -39,6 +39,12 @@ public class Token {
 			aliases.put("EQUALP", "EQUAL?");
 			aliases.put("NOTEQUALP", "NOTEQUAL?");
 			aliases.put("SET", "MAKE");
+			aliases.put("SETBG", "SETBACKGROUND");
+			aliases.put("SETPC", "SETPENCOLOR");
+			aliases.put("SETPS", "SETPENSIZE");
+			aliases.put("SETSH", "SETSHAPE");
+			aliases.put("PC", "PENCOLOR");
+			aliases.put("SH", "SHAPE");
 
 			try {
 				File[] files = new File("resources/languages").listFiles();
@@ -54,13 +60,11 @@ public class Token {
 							}else{ String[] subparts = parts[1].split("\\|");
 								aliases.put(subparts[0].toUpperCase(), parts[0]);
 								aliases.put(subparts[1].toUpperCase(),  parts[0]);
-								//System.out.println(subparts[0] + " and " + subparts[1] + " of " + parts[1]);
 							}
 						}
 					
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -80,10 +84,8 @@ public class Token {
 	
 	public Token(String s){
 		if(aliases.containsKey(s.toUpperCase())){
-			//System.out.println(">>" + s + "  " + aliases.get(s));
 			s=aliases.get(s);
 		}
-		//System.out.println(aliases.get("ZZ"));
 		this.value = Tkn.fromString(s);
 	}
 	
@@ -164,6 +166,20 @@ public class Token {
 			TO("TO"),
 			NUMBER("NUMBER"),
 			SYMBOL("SYMBOL"),
+			SETBACKGROUND("SETBACKGROUND"),
+			SETPENCOLOR("SETPENCOLOR"),
+			SETPENSIZE("SETPENSIZE"),
+			SETSHAPE("SETSHAPE"),
+			SETPALETTE("SETPALETTE"),
+			PENCOLOR("PENCOLOR"),
+			SHAPE("SHAPE"),
+			STAMP("STAMP"),
+			CLEARSTAMPS("CLEARSTAMPS"),
+			ID("ID"),
+			TURTLES("TURTLES"),
+			TELL("TELL"),
+			ASK("ASK"),
+			ASKWITH("ASKWITH"),
 			EOF("EOF");
 	
 			private String text;
@@ -181,7 +197,6 @@ public class Token {
 			}
 	
 			public static Tkn fromString(String text) {
-				//if(aliases.containsKey(text)) text=aliases.get(text);
 				if (text != null) {
 					for (Tkn b : Tkn.values()) {
 						if (text.equalsIgnoreCase(b.text)) {
