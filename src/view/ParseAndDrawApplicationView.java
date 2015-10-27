@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import slogo.SLOGOApplication;
 import sun.security.tools.keytool.Main;
@@ -42,6 +43,9 @@ public class ParseAndDrawApplicationView extends ConcreteView implements Applica
 	private static final double INST_X = 1;
 	private static final double INST_Y = 99;
 	
+	private Text commandHistory;
+	private static final double HIST_X = 90;
+	private static final double HIST_Y = 100;
 
 	private HBox penSelect;
 
@@ -92,10 +96,16 @@ public class ParseAndDrawApplicationView extends ConcreteView implements Applica
 		newInstance.setOnAction(e->handleButtonNewInstance());
 		myRoot.getChildren().add(newInstance);
 		
+		this.commandHistory = new Text();
+		commandHistory.setX(X(HIST_X));
+		commandHistory.setY(Y(HIST_Y));
+		myRoot.getChildren().add(commandHistory);
+		
 	}
 
 	private void handleButtonEvaluate() {
 		String text = parserText.getParagraphs().toString();
+		commandHistory.setText(commandHistory.getText() + "\n" + text);
 		parserText.clear();
 		myClient.parseText(text);
 	}
