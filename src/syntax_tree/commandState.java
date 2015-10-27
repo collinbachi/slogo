@@ -2,7 +2,7 @@ package syntax_tree;
 
 import java.util.ArrayList;
 import parser.ParserCommand;
-import slogo.CommandFactory;
+import slogo.ParserCommandFactory;
 import parser.ParserCommand;
 import slogo.ParserCommandFactory;
 
