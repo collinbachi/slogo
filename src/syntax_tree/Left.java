@@ -9,7 +9,7 @@ public class Left extends commandState implements returnsValue{
 	public Left(ParserClient parserClient, returnsValue arg0){
 		super(parserClient);
 		this.arg0 = arg0.returnValue();
-		appendToCommandList(parserCommandFactory.getCommand("LEFT", this.arg0));
+		parserClient.equals(parserCommandFactory.getCommand("LEFT", this.arg0));
 	}
 
 	@Override
