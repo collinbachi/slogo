@@ -1,5 +1,6 @@
 package slogo;
 
+
 public class Stamp {
 	private double x;
 	private double y;

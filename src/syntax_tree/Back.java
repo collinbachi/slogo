@@ -1,12 +1,21 @@
 package syntax_tree;
 
-public class Back extends commandState{
+import client.ParserClient;
+
+public class Back extends commandState implements returnsValue{
 	
 	private double arg0;
 	
-	public Back(returnsValue arg0){
+	public Back(ParserClient parserClient, returnsValue arg0){
+		super(parserClient);
 		this.arg0 = arg0.returnValue();
-		appendToCommandList(commandObjectFactory.getCommand("BACK", this.arg0));
+		parserClient.postCommand(parserCommandFactory.getCommand("BACK", this.arg0));
+	}
+
+	@Override
+	public double returnValue() {
+		// TODO Auto-generated method stub
+		return arg0;
 	}
 
 }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import parser.ParserCommand;
 import javafx.scene.paint.Color;
-import parser.ParserCommand;
 
 public interface ParserClient {
 

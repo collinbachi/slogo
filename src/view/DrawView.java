@@ -1,5 +1,7 @@
 package view;
 
+import java.util.List;
+
 import drawable.DrawCommand;
 import drawable.DrawRequest;
 import javafx.scene.paint.Color;
@@ -24,9 +26,9 @@ public interface DrawView {
 
 	double getHeading();
 
-	void executeCommand(DrawCommand cmd);
+	void executeCommand(int i, DrawCommand cmd);
 
-	double executeRequest(DrawRequest cmd);
+	double executeRequest(int i, DrawRequest cmd);
 	
 	void initObject(String filename, double x, double y, double orientation);
 

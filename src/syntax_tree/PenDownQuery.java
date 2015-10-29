@@ -1,9 +1,20 @@
 package syntax_tree;
 
-public class PenDownQuery extends commandState{
+import client.ParserClient;
+
+public class PenDownQuery extends commandState implements postCommand{
 	
-	public PenDownQuery(){
-		appendToCommandList(commandObjectFactory.getCommand("PENDOWN?"));
+	private ParserClient parseClient;
+	public PenDownQuery(ParserClient parseClient){
+		super(parseClient);
+		this.parseClient = parseClient;
+	}
+
+	@Override
+	public void postToClient() {
+		// TODO Auto-generated method stub
+		parseClient.postCommand(parserCommandFactory.getCommand("PENDOWN?"));
+		
 	}
 
 }

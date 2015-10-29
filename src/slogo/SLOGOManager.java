@@ -1,6 +1,7 @@
 package slogo;
 
 
+
 import client.ParseAndDrawSection;
 import client.SLOGOSection;
 import javafx.animation.KeyFrame;
@@ -15,9 +16,10 @@ import javafx.util.Duration;
 
 public class SLOGOManager {
 
-	//The SLOGOManager class contains the references to the the Scene, Group, and SLOGOSection being displayed. 
-	//The SLOGOManager class will also contain a setScreen method which 
-	//one can use to change the current screen.
+	/* The SLOGOManager class contains the references to the the Scene, Group, and SLOGOSection being displayed. 
+	 * The SLOGOManager class will also contain a setScreen method which 
+	 * one can use to change the current screen.
+	 */
 
 	private Group myRoot;
 	

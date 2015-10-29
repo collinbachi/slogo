@@ -81,10 +81,14 @@ public interface Drawable {
 	Boolean getShowing();
 
 	void addAnimationToQueue(ParserCommand cmd);
-	
-	void addAnimationsToQueue(List<ParserCommand> cmds);
 
+	void addAnimationsToQueue(List<ParserCommand> cmds);
+	
 	double runCommand(ParserCommand cmd);
 
 	void animate();
+	
+	void draw();
+	
+	void setDoneDrawing();
 }

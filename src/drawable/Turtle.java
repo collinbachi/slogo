@@ -9,6 +9,7 @@ import client.DrawingBoard;
 import drawable.DrawCommand.*;
 import parser.ParserCommand;
 import parser.ParserCommandMoveForward;
+import turtle_commands.LeftCommand;
 
 public class Turtle implements Drawable {
 	
@@ -22,6 +23,8 @@ public class Turtle implements Drawable {
 	Boolean myPenUp;
 	Boolean myShowing;
 	
+	private Boolean isDrawing;
+	
 	private static final String mySpriteFileName = "turtle.jpg";
 	private static final double myMoveSpeed = 50;
 	private static final double myTurnSpeed = 30;
@@ -34,23 +37,30 @@ public class Turtle implements Drawable {
 		myHeading = 120;
 		myShowing = true;
 		myPenUp = false;
-		
-		DrawCommand start = new DrawCommandInitObject(mySpriteFileName, myX, myY, myHeading);
-		myBoard.drawCommand(start);
+		isDrawing = false;
 		
 		//For testing
-		
-//		ParserCommand move = new ParserCommandMoveForward(300);
+
+//		ParserCommand move = new ParserCommandMoveForward(50);
 //		runCommand(move);
+//
+//		ParserCommand move2 = new ParserCommandMoveForward(150);
+//		runCommand(move2);
 		
 	}
 
 	// Core functions
+	
+	public void draw() {
+		DrawCommand start = new DrawCommandInitObject(mySpriteFileName, myX, myY, myHeading);
+		myBoard.drawCommand(this, start);
+	}
 
 	public void animate() {
-		while (myCommands.size() != 0) {
+		while (myCommands.size() != 0 && !isDrawing) {
 			ParserCommand cmd = myCommands.poll();
 			cmd.draw(this);
+			isDrawing = true;
 		}
 	}
 
@@ -97,8 +107,8 @@ public class Turtle implements Drawable {
 
 	@Override
 	public double setTowards(double x, double y) {
-		// TODO DO LATER!
-		return 0;
+		myHeading = Math.atan((y-myY)/(x-myX))*57.3;
+		return myHeading;
 	}
 	
 	@Override
@@ -131,26 +141,26 @@ public class Turtle implements Drawable {
 	@Override
 	public void drawShowing(Boolean state) {
 		DrawCommand cmd = new DrawCommandDrawShowing(state);
-		myBoard.drawCommand(cmd);
+		myBoard.drawCommand(this, cmd);
 	}
 
 	@Override
 	public void drawForward(double amt) {
 		DrawRequest cmdx = new DrawCommandGetX();
-		double x = myBoard.drawRequest(cmdx);
+		double x = myBoard.drawRequest(this, cmdx);
 		
 		DrawRequest cmdy = new DrawCommandGetY();
-		double y = myBoard.drawRequest(cmdy);
+		double y = myBoard.drawRequest(this, cmdy);
 		
 		DrawRequest cmdh = new DrawCommandGetHeading();
-		double h = myBoard.drawRequest(cmdh);
+		double h = myBoard.drawRequest(this, cmdh);
 		
 		double newX = x + Math.cos(Math.toRadians(90 - h))*amt;
 		double newY = y - Math.sin(Math.toRadians(90 - h))*amt;
 		// amount is subtracted because we have already flipped the y coordinate upside-down in the view when we get it here
 		
 		DrawCommand cmd = new DrawCommandDrawMove(newX, newY, myMoveSpeed);
-		myBoard.drawCommand(cmd);
+		myBoard.drawCommand(this, cmd);
 	}
 
 //	@Override
@@ -161,12 +171,12 @@ public class Turtle implements Drawable {
 	@Override
 	public void drawLeft(double degrees) {
 		DrawRequest cmdh = new DrawCommandGetHeading();
-		double h = myBoard.drawRequest(cmdh);
+		double h = myBoard.drawRequest(this, cmdh);
 		
 		double newHeading = h - degrees;
 		
 		DrawCommand cmd = new DrawCommandDrawTurn(newHeading, myTurnSpeed);
-		myBoard.drawCommand(cmd);
+		myBoard.drawCommand(this, cmd);
 	}
 
 //	@Override
@@ -177,7 +187,7 @@ public class Turtle implements Drawable {
 	@Override
 	public void drawHeading(double degrees) {
 		DrawCommand cmd = new DrawCommandDrawTurn(degrees, myTurnSpeed);
-		myBoard.drawCommand(cmd);
+		myBoard.drawCommand(this, cmd);
 	}
 
 	@Override
@@ -189,27 +199,27 @@ public class Turtle implements Drawable {
 	@Override
 	public void drawXY(double x, double y) {
 		DrawCommand cmd = new DrawCommandDrawMove(x, y, myMoveSpeed);
-		myBoard.drawCommand(cmd);
+		myBoard.drawCommand(this, cmd);
 	}
 
 	@Override
 	public void drawPen(Boolean state) {
 		DrawCommand cmd = new DrawCommandDrawPen(state);
-		myBoard.drawCommand(cmd);
+		myBoard.drawCommand(this, cmd);
 	}
 
 	@Override
 	public void drawToHome() {
 		DrawCommand cmd = new DrawCommandDrawMove(0, 0, myMoveSpeed);
-		myBoard.drawCommand(cmd);
+		myBoard.drawCommand(this, cmd);
 	}
 
 	@Override
 	public void drawClearScreen() {
 		DrawCommand cmdm = new DrawCommandDrawMove(0, 0, myMoveSpeed);
-		myBoard.drawCommand(cmdm);
+		myBoard.drawCommand(this, cmdm);
 		DrawCommand cmdc = new DrawCommandDrawClear();
-		myBoard.drawCommand(cmdc);
+		myBoard.drawCommand(this, cmdc);
 	}
 
 	@Override
@@ -241,12 +251,10 @@ public class Turtle implements Drawable {
 	public void addAnimationToQueue(ParserCommand cmd) {
 		myCommands.add(cmd);
 	}
-
-	@Override
+	
 	public void addAnimationsToQueue(List<ParserCommand> cmds) {
-		// TODO Auto-generated method stub
-		while(!cmds.isEmpty()){
-			addAnimationToQueue(cmds.remove(0));
+		for (ParserCommand cmd: cmds) {
+			runCommand(cmd);
 		}
 	}
 
@@ -320,6 +328,10 @@ public class Turtle implements Drawable {
 	public double getID() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public void setDoneDrawing() {
+		isDrawing = false;
 	}
 
 }

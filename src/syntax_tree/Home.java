@@ -1,9 +1,21 @@
 package syntax_tree;
 
-public class Home extends commandState{
+import client.ParserClient;
 
-	public Home(){
-		appendToCommandList(commandObjectFactory.getCommand("HOME"));
+public class Home extends commandState implements postCommand{
+
+	private ParserClient parserClient;
+
+	public Home(ParserClient parserClient){
+		super(parserClient);
+		this.parserClient = parserClient;
+	}
+
+	@Override
+	public void postToClient() {
+		// TODO Auto-generated method stub
+		parserClient.postCommand(parserCommandFactory.getCommand("HOME"));
+		
 	}
 
 }

@@ -1,9 +1,21 @@
 package syntax_tree;
 
-public class HideTurtle extends commandState{
+import client.ParserClient;
+
+public class HideTurtle extends commandState implements postCommand{
 	
-	public HideTurtle(){
-		appendToCommandList(commandObjectFactory.getCommand("HIDETURTLE"));
+	private ParserClient parseClient;
+
+	public HideTurtle(ParserClient parseClient){
+		super(parseClient);
+		this.parseClient = parseClient;
+	}
+
+	@Override
+	public void postToClient() {
+		// TODO Auto-generated method stub
+		parseClient.postCommand(parserCommandFactory.getCommand("HIDETURTLE"));
+		
 	}
 
 }

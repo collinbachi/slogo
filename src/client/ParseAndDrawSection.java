@@ -1,6 +1,7 @@
 package client;
 
 import syntax_tree.SyntaxTree;
+
 import view.ApplicationView;
 import view.DrawView;
 import view.ParseAndDrawApplicationView;
@@ -14,11 +15,12 @@ import java.util.List;
 import parser.ParserCommand;
 import slogo.SLOGOManager;
 import slogo.SLOGOScanner;
+import slogo.Token;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 
-public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, ParserClient {
+public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, ParserClient, DrawClient {
 	private String rawInput = "";
 
 	// Sub-applications
@@ -32,6 +34,9 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 	protected final ApplicationView myApplicationView; 
 
 	private final DrawView myDrawView;
+	
+	private SLOGOScanner scanner;
+	private SyntaxTree syntaxTree;
 
 
 	public ParseAndDrawSection (SLOGOManager manager) {
@@ -40,12 +45,14 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		// NOTE -- DrawView currently refers to the same object
 		// However, the class is constructed in this way so that if the view becomes too complicated
 		// And needs to be split up into different classes, the application won't need to be rewritten		
-		myDrawView = new ParseAndDrawDrawView(myView, this);
+		myDrawView = new ParseAndDrawDrawView(myView, this, this);
 		myApplicationView = new ParseAndDrawApplicationView(myView, this);
+		syntaxTree = new SyntaxTree();
 		
 		//myParser = new SLOGOScanner(this); // ?
 		
 		myDrawables = new DrawableSet(this);
+		myDrawables.makeFirst();
 
 	}
 
@@ -56,25 +63,33 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 	}
 
 	public void parseText(String text) {
-
-		SLOGOScanner scanner = new SLOGOScanner(text);
-		SyntaxTree syntaxTree = new SyntaxTree();
+		scanner = new SLOGOScanner(text);
 		
-		while(scanner.hasNext()){
-			String temp = scanner.next();
+		//while(scanner.hasNext()){
+		for (Token t : scanner){
+			String temp = t.toString();
+			if (temp=="NUMBER") temp = Integer.toString(t.getNumber());
 			System.out.println(temp);
 			syntaxTree.appendToInput(temp);
 		}
-		for (Drawable obj: myDrawables.getActiveObjs()) {
-			obj.addAnimationsToQueue(syntaxTree.parseTokens());
-		}
-		for (Drawable obj: myDrawables.getActiveObjs()) {
-			obj.animate();
-		}
+		//List<postCommand> cmds = syntaxTree.parseTokens(this);
+		syntaxTree.parseTokens(this);
+		
+		// Deprecated -- REMOVE THIS CALL ONCE POSTCOMMAND IS BEING CALLED
+		//for (Drawable obj: myDrawables.getActiveObjs()) {
+		//	obj.addAnimationsToQueue(cmds);
+		//}
+		
+		//for (Drawable obj: myDrawables.getActiveObjs()) {
+		//	obj.animate();
+		//}
 	}
 	
 	//Returns the last int in the list
 	public int setActives(List<Integer> actives) {
+		if (actives.size() < 1) {
+			return -1;
+		}
 		myDrawables.setActive(actives);
 		return actives.get(actives.size() - 1);
 	}
@@ -133,12 +148,14 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		return;
 	}
 
-	public void drawCommand(DrawCommand cmd) {
-		myDrawView.executeCommand(cmd);
+	public void drawCommand(Drawable obj, DrawCommand cmd) {
+		int i = myDrawables.getIndex(obj);
+		myDrawView.executeCommand(i, cmd);
 	}
 
-	public double drawRequest(DrawRequest cmd) {
-		return myDrawView.executeRequest(cmd);
+	public double drawRequest(Drawable obj, DrawRequest cmd) {
+		int i = myDrawables.getIndex(obj);
+		return myDrawView.executeRequest(i, cmd);
 	}
 
 	// SLOGOSection functions 
@@ -164,6 +181,9 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 
 	@Override
 	public void update(double elapsedTime) {
+		for (Drawable obj : myDrawables.getAll()) {
+			obj.animate();
+		}
 		myDrawView.update();
 		
 	}
@@ -173,4 +193,10 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void drawingDone(int id) {
+		myDrawables.get(id).setDoneDrawing();
+	}
+
 }

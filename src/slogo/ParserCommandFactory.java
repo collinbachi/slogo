@@ -1,5 +1,7 @@
 package slogo;
 
+
+
 import parser.ParserCommand;
 import turtle_commands.*;
 import turtle_queries.*;
@@ -7,6 +9,7 @@ import turtle_queries.*;
 public class ParserCommandFactory {
 
 	public ParserCommand getCommand(String input){
+		System.out.println(input);
 		if(input.equals("PENDOWN")){
 			return new PenDownCommand();
 		}
@@ -46,6 +49,7 @@ public class ParserCommandFactory {
 	}
 
 	public ParserCommand getCommand(String input, double arg0) {
+		System.out.println(input);
 		if (input.equals("FORWARD")) {
 			return new ForwardCommand(arg0);
 		} else if (input.equals("BACK")) {
@@ -62,6 +66,7 @@ public class ParserCommandFactory {
 	}
 
 	public ParserCommand getCommand(String input, double arg0, double arg1) {
+		System.out.println(input);
 		if (input.equals("TOWARDS")) {
 			return new TowardsCommand(arg0, arg1);
 		} else if(input.equals("SETXY")){
@@ -70,30 +75,5 @@ public class ParserCommandFactory {
 			return null;
 		}
 	}
-	
-	// public ParserCommand getCommand(Token type, double expr1, double expr2,
-	// String key, VariableMap vmap, ProcedureMap pmap){
-	// SLOGOScanner.Token newToken = SLOGOScanner.Token.AND;
-
-	// if(type.equals("FORWARD")){
-	// return new ForwardCommand(expr1);
-	// }
-	// else if(type.equals("BACK")){
-	// return new BackCommand(expr1);
-	// }
-	// else if(type.equals(Token.LEFT)){
-	// return new LeftCommand(expr1);
-	// }
-	// else if(type.equals(Token.RIGHT)){
-	// return new RightCommand(expr1);
-	// }
-	// else if(type.equals(Token.SETHEADING)){
-	// return new SetHeadingCommand(expr1);
-	// }
-	// else if(type.equals(Token.TOWARDS)){
-	// return new TowardsCommand(expr1, expr2);
-	// }
-	// return null;
-	// }
 
 }
