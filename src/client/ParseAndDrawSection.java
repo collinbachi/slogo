@@ -72,16 +72,17 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 			System.out.println(temp);
 			syntaxTree.appendToInput(temp);
 		}
-		List<ParserCommand> cmds = syntaxTree.parseTokens(this);
+		//List<postCommand> cmds = syntaxTree.parseTokens(this);
+		syntaxTree.parseTokens(this);
 		
 		// Deprecated -- REMOVE THIS CALL ONCE POSTCOMMAND IS BEING CALLED
-		for (Drawable obj: myDrawables.getActiveObjs()) {
-			obj.addAnimationsToQueue(cmds);
-		}
+		//for (Drawable obj: myDrawables.getActiveObjs()) {
+		//	obj.addAnimationsToQueue(cmds);
+		//}
 		
-		for (Drawable obj: myDrawables.getActiveObjs()) {
-			obj.animate();
-		}
+		//for (Drawable obj: myDrawables.getActiveObjs()) {
+		//	obj.animate();
+		//}
 	}
 	
 	//Returns the last int in the list

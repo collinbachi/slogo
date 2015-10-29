@@ -9,8 +9,8 @@ import java.util.Set;
 import client.ParserClient;
 import parser.ParserCommand;
 
-public class TreeCommandFactory implements returnsCommandList, returnsValue {
-	private ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
+public class TreeCommandFactory implements returnsCommandList, returnsValue, postCommand {
+	private ArrayList<postCommand> commandList = new ArrayList<postCommand>();
 	private ArrayList<Constant> variableList = new ArrayList<Constant>();
 	private double value;
 	private String currentInput;
@@ -150,7 +150,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsValue {
 
 		case "IF":
 			If newIf = new If(parserClient, recurse(), recurse());
-			getCommandList().addAll(newIf.getCommandList());
+			getCommandList().add(newIf);
 			break;
 
 		case "IFELSE":
@@ -177,7 +177,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsValue {
 
 		case "FORWARD":
 			Forward newForward = new Forward(parserClient, recurse());
-			getCommandList().addAll(newForward.getCommandList());
+			getCommandList().add(newForward);
 			break;
 
 		case "BK":
@@ -185,14 +185,14 @@ public class TreeCommandFactory implements returnsCommandList, returnsValue {
 			getCommandList().addAll(newBack.getCommandList());
 			break;
 
-		case "LT":
+		case "LEFT":
 			Left newLeft = new Left(parserClient, recurse());
-			getCommandList().addAll(newLeft.getCommandList());
+			getCommandList().add(newLeft);
 			break;
 
-		case "RT":
+		case "RIGHT":
 			Right newRight = new Right(parserClient, recurse());
-			getCommandList().addAll(newRight.getCommandList());
+			getCommandList().add(newRight);
 			break;
 
 		case "SETHEADING":
@@ -399,12 +399,12 @@ public class TreeCommandFactory implements returnsCommandList, returnsValue {
 	}
 
 	@Override
-	public ArrayList<ParserCommand> getCommandList() {
+	public ArrayList<postCommand> getCommandList() {
 		return commandList;
 	}
 
 	@Override
-	public void appendToCommandList(ParserCommand command) {
+	public void appendToCommandList(postCommand command) {
 		commandList.add(command);
 	}
 
@@ -415,5 +415,14 @@ public class TreeCommandFactory implements returnsCommandList, returnsValue {
 
 	public String getIndexVariable() {
 		return indexVariable;
+	}
+
+	@Override
+	public void postToClient() {
+		// TODO Auto-generated method stub
+		for(int i = 0; i < getCommandList().size(); i++){
+			getCommandList().get(i).postToClient();
+		}
+		
 	}
 }

@@ -5,8 +5,8 @@ import parser.ParserCommand;
 //TODO: Possibly make this an array, and have another "Node" superclass for these to inherit from
 public interface returnsCommandList {
 	
-	ArrayList<ParserCommand> getCommandList();
+	ArrayList<postCommand> getCommandList();
 	
-	void appendToCommandList(ParserCommand command);
+	void appendToCommandList(postCommand command);
 	
 }

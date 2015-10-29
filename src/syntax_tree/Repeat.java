@@ -11,9 +11,9 @@ public class Repeat extends commandState implements returnsValue{
 		this.arg0 = arg0.returnValue();
 
 		for(int i = 0; i < this.arg0; i++){
-			getCommandList().addAll(arg1.getCommandList());
+			//getCommandList().addAll(arg1.getCommandList());
+			arg1.getCommandList().get(i).postToClient();
 		}
-
 	}
 
 	@Override

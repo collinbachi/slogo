@@ -9,7 +9,7 @@ import parser.ParserCommand;
 import slogo.ParserCommandFactory;
 
 public class commandState{
-	ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
+	ArrayList<postCommand> commandList = new ArrayList<postCommand>();
 	ParserCommandFactory parserCommandFactory = new ParserCommandFactory(); 
 	ParserClient parserClient;
 	
@@ -18,11 +18,11 @@ public class commandState{
 		
 	}
 	
-	protected ArrayList<ParserCommand> getCommandList(){
+	protected ArrayList<postCommand> getCommandList(){
 		return commandList;
 	}
 	
-	protected void appendToCommandList(ParserCommand s){
+	protected void appendToCommandList(postCommand s){
 		commandList.add(s);
 	}
 	
