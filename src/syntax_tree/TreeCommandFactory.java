@@ -1,68 +1,38 @@
 package syntax_tree;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import client.ParserClient;
 import parser.ParserCommand;
 
-public class TreeCommandFactory implements returnsCommandList, returnsVariableList, returnsValue {
-	private ArrayList<ParserCommand> commandList = new ArrayList<ParserCommand>();
-	private ArrayList<Constant> variableList = new ArrayList<Constant>();
+public class TreeCommandFactory implements returnsCommandList, returnsValue, postCommand {
+	private ArrayList<postCommand> commandList = new ArrayList<postCommand>();
 	private double value;
 	private String currentInput;
 	private String indexVariable;
-
-	private final String COMMAND = "commandList";
-	private final String VARIABLE = "arrayList";
-	private final String FOR = "forList";
-	private final String DO = "doList";
-	private final String TO = "toList";
 
 	private Set<String> commandSet;
 	private Set<String> mathSet;
 	private Set<String> booleanSet;
 	private List<String> inputTokens;
 	private Map<String, returnsValue> variableMap;
-	private Map<String, returnsCommandList> commandListMap;
+	private Map<String, ArrayList<String>> commandListMap;
+	private ParserClient parserClient;
 
-	public TreeCommandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
-			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap, String listType) {
+	public TreeCommandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet,
+			List<String> inputTokens, Map<String, returnsValue> variableMap,
+			Map<String, ArrayList<String>> commandListMap, ParserClient parserClient) {
 		this.commandSet = commandSet;
 		this.mathSet = mathSet;
 		this.booleanSet = booleanSet;
 		this.inputTokens = inputTokens;
 		this.variableMap = variableMap;
 		this.commandListMap = commandListMap;
-
-		switch (listType) {
-		case COMMAND:
-			buildList(COMMAND);
-			break;
-		case VARIABLE:
-			buildList(VARIABLE);
-			break;
-		case FOR:
-			buildList(FOR);
-			break;
-		case DO:
-			buildList(DO);
-			break;
-		case TO:
-			buildList(TO);
-			break;
-		}
-	}
-
-	public TreeCommandFactory(Set<String> commandSet, Set<String> mathSet, Set<String> booleanSet, List<String> inputTokens,
-			Map<String, returnsValue> variableMap, Map<String, returnsCommandList> commandListMap) {
-		this.commandSet = commandSet;
-		this.mathSet = mathSet;
-		this.booleanSet = booleanSet;
-		this.inputTokens = inputTokens;
-		this.variableMap = variableMap;
-		this.commandListMap = commandListMap;
+		this.parserClient = parserClient;
 
 		currentInput = inputTokens.remove(0);
 
@@ -76,133 +46,226 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 			resolveVariable(currentInput);
 		} else if (variableMap.containsKey(currentInput)) {
 			value = variableMap.get(currentInput).returnValue();
-		} else if (commandListMap.containsKey(currentInput)){
-			getCommandList().addAll(commandListMap.get(currentInput).getCommandList());
+		} else if (commandListMap.containsKey(currentInput)) {
+			ArrayList<String> toList = commandListMap.get(currentInput);
+			while (!toList.isEmpty()) {
+				inputTokens.add(0, toList.remove(0));
+			}
+			recurse();
 		} else {
 			createConstant(currentInput);
 		}
 	}
 
 	private void createCommand(String currentInput) {
+		String indexVariable;
+		int start;
+		int end;
+		int index;
+		ArrayList<String> forTokens;
 		switch (currentInput) {
+
+		case "TELL":
+			inputTokens.remove(0); // remove '['
+			ArrayList<Integer> actives = new ArrayList<Integer>();
+			while(!inputTokens.get(0).equals("RBRACKET")){
+				actives.add((int)recurse().returnValue());
+			}
+			inputTokens.remove(0);
+			value = parserClient.setActives(actives);
+			break;
+
 		case "REPEAT":
-			Repeat newRepeat = new Repeat(recurse(), recurseList(COMMAND));
-			getCommandList().addAll(newRepeat.getCommandList());
+			Repeat newRepeat = new Repeat(parserClient, recurse(), recurse());
+			getCommandList().add(newRepeat);
 			break;
 
 		case "DOTIMES":
-			DoTimes newDoTimes = new DoTimes(recurseList(DO), this, variableMap, inputTokens);
-			getCommandList().addAll(newDoTimes.getCommandList());
+			inputTokens.remove(0); // Remove '['
+
+			indexVariable = inputTokens.remove(0);
+			start = 1;
+			end = (int) new Constant((int) recurse().returnValue()).returnValue();
+
+			inputTokens.remove(0);// Remove ']'
+			inputTokens.remove(0);// Remove '['
+
+			forTokens = new ArrayList<String>();
+			index = 0;
+			while (!inputTokens.get(index).equals("RBRACKET")) {
+				forTokens.add(inputTokens.get(index));
+				index++;
+			}
+
+			for(int i = 1; i < end; i++){
+                for (int j = forTokens.size() - 1; j >= 0; j--) {
+                        inputTokens.add(0, forTokens.get(j));
+                }
+			}
+
+			for (int i = start; i <= end; i++) {
+				variableMap.put(indexVariable, new Constant(i));
+				TreeCommandFactory newCommandFactory = recurse();
+				value = newCommandFactory.returnValue();
+				getCommandList().addAll(newCommandFactory.getCommandList());
+				}
 			break;
 
 		case "FOR":
-			For newFor = new For(recurseList(FOR), this, variableMap, inputTokens);
-			getCommandList().addAll(newFor.getCommandList());
+			inputTokens.remove(0); // Remove '['
+
+			indexVariable = inputTokens.remove(0);
+			start = (int) new Constant((int) recurse().returnValue()).returnValue();
+			end = (int) new Constant((int) recurse().returnValue()).returnValue();
+			int increment = (int) new Constant((int) recurse().returnValue()).returnValue();
+
+			inputTokens.remove(0);// Remove ']'
+			inputTokens.remove(0);// Remove '['
+
+			forTokens = new ArrayList<String>();
+			index = 0;
+			while (!inputTokens.get(index).equals("RBRACKET")){
+				forTokens.add(inputTokens.get(index));
+				index++;
+			}
+
+			int range = Math.abs(end-start);
+			for(int i = 0; i < range; i+= increment){
+                for (int j = forTokens.size() - 1; j >= 0; j--) {
+                        inputTokens.add(0, forTokens.get(j));
+                }
+			}
+
+			for (int i = start; i <= end; i += increment) {
+				variableMap.put(indexVariable, new Constant(i));
+				TreeCommandFactory newCommandFactory = recurse();
+				value = newCommandFactory.returnValue();
+				getCommandList().addAll(newCommandFactory.getCommandList());
+				}
+
 			break;
 
 		case "IF":
-			If newIf = new If(recurse(), recurse());
-			getCommandList().addAll(newIf.getCommandList());
+			If newIf = new If(parserClient, recurse(), recurse());
+			getCommandList().add(newIf);
 			break;
 
 		case "IFELSE":
-			IfElse newIfElse = new IfElse(recurse(), recurse(), recurse());
+			IfElse newIfElse = new IfElse(parserClient, recurse(), recurse(), recurse());
 			getCommandList().addAll(newIfElse.getCommandList());
 			break;
-			
+
 		case "TO":
 			String commandName = inputTokens.remove(0);
-			recurseList(TO);
-			commandListMap.put(commandName, recurse());
+			inputTokens.remove(0); // remove '['
+			while (!inputTokens.get(0).equals("]")) {
+				variableMap.put(inputTokens.remove(0), new Constant(0));
+			}
+			inputTokens.remove(0); // remove ']'
+			inputTokens.remove(0); // remove '['
+
+			ArrayList<String> toCommandList = new ArrayList<String>();
+			while (!inputTokens.get(0).equals("]")) {
+				toCommandList.add(inputTokens.remove(0));
+			}
+
+			commandListMap.put(commandName, toCommandList);
 			break;
 
 		case "FORWARD":
-			Forward newForward = new Forward(recurse());
-			getCommandList().addAll(newForward.getCommandList());
+			Forward newForward = new Forward(parserClient, recurse());
+			getCommandList().add(newForward);
 			break;
-			
-		case "BACK":
-			Back newBack = new Back(recurse());
+
+		case "BACKWARD":
+			Back newBack = new Back(parserClient, recurse());
 			getCommandList().addAll(newBack.getCommandList());
 			break;
-			
+
 		case "LEFT":
-			Left newLeft = new Left(recurse());
-			getCommandList().addAll(newLeft.getCommandList());
+			Left newLeft = new Left(parserClient, recurse());
+			getCommandList().add(newLeft);
 			break;
-			
+
 		case "RIGHT":
-			Right newRight = new Right(recurse());
-			getCommandList().addAll(newRight.getCommandList());
+			Right newRight = new Right(parserClient, recurse());
+			getCommandList().add(newRight);
 			break;
 
 		case "SETHEADING":
-			SetHeading newSetHeading = new SetHeading(recurse());
+			SetHeading newSetHeading = new SetHeading(parserClient, recurse());
 			getCommandList().addAll(newSetHeading.getCommandList());
 			break;
-			
+
 		case "TOWARDS":
-			Towards newTowards = new Towards(recurse(), recurse());
+			Towards newTowards = new Towards(parserClient, recurse(), recurse());
 			getCommandList().addAll(newTowards.getCommandList());
 			break;
-			
+
 		case "SETXY":
-			SetXY newSetXY = new SetXY(recurse(), recurse());
+			SetXY newSetXY = new SetXY(parserClient, recurse(), recurse());
 			getCommandList().addAll(newSetXY.getCommandList());
 			break;
-			
+
 		case "PENDOWN":
-			PenDown newPenDown = new PenDown();
+			PenDown newPenDown = new PenDown(parserClient);
 			getCommandList().addAll(newPenDown.getCommandList());
 			break;
-			
+
 		case "PENUP":
-			PenUp newPenUp = new PenUp();
+			PenUp newPenUp = new PenUp(parserClient);
 			getCommandList().addAll(newPenUp.getCommandList());
 			break;
-		
+
 		case "SHOWTURTLE":
-			ShowTurtle newShowTurtle = new ShowTurtle();
+			ShowTurtle newShowTurtle = new ShowTurtle(parserClient);
 			getCommandList().addAll(newShowTurtle.getCommandList());
 			break;
-			
+
 		case "HIDETURTLE":
-			HideTurtle newHideTurtle = new HideTurtle();
+			HideTurtle newHideTurtle = new HideTurtle(parserClient);
 			getCommandList().addAll(newHideTurtle.getCommandList());
 			break;
-			
+
 		case "HOME":
-			Home newHome = new Home();
+			Home newHome = new Home(parserClient);
 			getCommandList().addAll(newHome.getCommandList());
 			break;
-			
+
 		case "XCOR?":
-			Xcor newXcor = new Xcor();
+			Xcor newXcor = new Xcor(parserClient);
 			getCommandList().addAll(newXcor.getCommandList());
 			break;
-			
+
 		case "YCOR?":
-			Ycor newYcor = new Ycor();
+			Ycor newYcor = new Ycor(parserClient);
 			getCommandList().addAll(newYcor.getCommandList());
 			break;
-			
+
 		case "HEADING?":
-			Heading newHeading = new Heading();
+			Heading newHeading = new Heading(parserClient);
 			getCommandList().addAll(newHeading.getCommandList());
 			break;
-		
+
 		case "PENDOWN?":
-			PenDownQuery newPenDownQuery = new PenDownQuery();
+			PenDownQuery newPenDownQuery = new PenDownQuery(parserClient);
 			getCommandList().addAll(newPenDownQuery.getCommandList());
 			break;
-			
+
 		case "SHOWING?":
-			Showing newShowing = new Showing();
+			Showing newShowing = new Showing(parserClient);
 			getCommandList().addAll(newShowing.getCommandList());
 			break;
-			
+
 		case "LBRACKET":
-			buildList(COMMAND);
+			// TODO: Create a list class?
+			// buildList(COMMAND);
+			while (!inputTokens.get(0).equals("RBRACKET")) {
+				TreeCommandFactory newCommandFactory = recurse();
+				value = newCommandFactory.returnValue();
+				getCommandList().addAll(newCommandFactory.getCommandList());
+			}
+			inputTokens.remove(0);
 			break;
 
 		case "MAKE":
@@ -216,6 +279,7 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 		case "RBRACKET":
 			break;
 		}
+
 	}
 
 	private void createMath(String currentInput) {
@@ -324,46 +388,8 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 	}
 
 	protected TreeCommandFactory recurse() {
-		return new TreeCommandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap);
-	}
-
-	protected TreeCommandFactory recurseList(String listType) {
-		return new TreeCommandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens, this.variableMap, this.commandListMap, listType);
-	}
-
-	private void buildList(String listType) {
-		String previousToken = inputTokens.get(0);
-		if(listType.equals(TO)){ inputTokens.remove(0); }
-
-		if (listType.equals(DO)) {
-			inputTokens.remove(0);
-			indexVariable = inputTokens.remove(0);
-			Constant indexStart = new Constant(1);
-			variableMap.put(indexVariable, indexStart);
-		}
-
-		if (listType.equals(FOR)) {
-			inputTokens.remove(0);
-			indexVariable = inputTokens.remove(0);
-			Constant indexStart = new Constant((int) recurse().returnValue());
-			variableMap.put(indexVariable, indexStart);
-			getVariableList().add(indexStart);
-		}
-
-		while (!previousToken.equals("LBRACKET") && inputTokens.size() > 0) {
-			previousToken = inputTokens.get(0);
-			if (listType.equals(COMMAND)) {
-				getCommandList().addAll(recurse().getCommandList());
-			} else if (listType.equals(TO)) {
-				if(previousToken.equals("RBRACKET")) {
-					inputTokens.remove(0);
-					return; 
-				}
-				variableMap.put(inputTokens.remove(0), new Constant((int) recurse().returnValue()));
-			} else {
-				getVariableList().add(new Constant((int) recurse().returnValue()));
-			}
-		}
+		return new TreeCommandFactory(this.commandSet, this.mathSet, this.booleanSet, this.inputTokens,
+				this.variableMap, this.commandListMap, this.parserClient);
 	}
 
 	public void resolveVariable(String currentInput) {
@@ -372,12 +398,12 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 	}
 
 	@Override
-	public ArrayList<ParserCommand> getCommandList() {
+	public ArrayList<postCommand> getCommandList() {
 		return commandList;
 	}
 
 	@Override
-	public void appendToCommandList(ParserCommand command) {
+	public void appendToCommandList(postCommand command) {
 		commandList.add(command);
 	}
 
@@ -386,15 +412,16 @@ public class TreeCommandFactory implements returnsCommandList, returnsVariableLi
 		return value;
 	}
 
-	@Override
-	public ArrayList<Constant> getVariableList() {
-		return variableList;
+	public String getIndexVariable() {
+		return indexVariable;
 	}
 
 	@Override
-	public void appendToVariableList(Constant c) {}
+	public void postToClient() {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < getCommandList().size(); i++) {
+			getCommandList().get(i).postToClient();
+		}
 
-	public String getIndexVariable() {
-		return indexVariable;
 	}
 }

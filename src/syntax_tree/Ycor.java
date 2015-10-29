@@ -1,9 +1,20 @@
 package syntax_tree;
 
-public class Ycor extends commandState {
+import client.ParserClient;
 
-	public Ycor() {
-		appendToCommandList(commandObjectFactory.getCommand("YCOR?"));
+public class Ycor extends commandState implements postCommand{
+	
+	private ParserClient parseClient;
+
+	public Ycor(ParserClient parseClient) {
+		super(parseClient);
+	}
+
+	@Override
+	public void postToClient() {
+		// TODO Auto-generated method stub
+		parseClient.postCommand(parserCommandFactory.getCommand("YCOR?"));
+		
 	}
 
 }

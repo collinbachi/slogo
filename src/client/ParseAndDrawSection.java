@@ -34,6 +34,9 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 	protected final ApplicationView myApplicationView; 
 
 	private final DrawView myDrawView;
+	
+	private SLOGOScanner scanner;
+	private SyntaxTree syntaxTree;
 
 
 	public ParseAndDrawSection (SLOGOManager manager) {
@@ -44,6 +47,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 		// And needs to be split up into different classes, the application won't need to be rewritten		
 		myDrawView = new ParseAndDrawDrawView(myView, this, this);
 		myApplicationView = new ParseAndDrawApplicationView(myView, this);
+		syntaxTree = new SyntaxTree();
 		
 		//myParser = new SLOGOScanner(this); // ?
 		
@@ -59,9 +63,7 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 	}
 
 	public void parseText(String text) {
-
-		SLOGOScanner scanner = new SLOGOScanner(text);
-		SyntaxTree syntaxTree = new SyntaxTree();
+		scanner = new SLOGOScanner(text);
 		
 		//while(scanner.hasNext()){
 		for (Token t : scanner){
@@ -70,16 +72,17 @@ public class ParseAndDrawSection extends SLOGOSection implements DrawingBoard, P
 			System.out.println(temp);
 			syntaxTree.appendToInput(temp);
 		}
-		List<ParserCommand> cmds = syntaxTree.parseTokens(this);
+		//List<postCommand> cmds = syntaxTree.parseTokens(this);
+		syntaxTree.parseTokens(this);
 		
 		// Deprecated -- REMOVE THIS CALL ONCE POSTCOMMAND IS BEING CALLED
-		for (Drawable obj: myDrawables.getActiveObjs()) {
-			obj.addAnimationsToQueue(cmds);
-		}
+		//for (Drawable obj: myDrawables.getActiveObjs()) {
+		//	obj.addAnimationsToQueue(cmds);
+		//}
 		
-		for (Drawable obj: myDrawables.getActiveObjs()) {
-			obj.animate();
-		}
+		//for (Drawable obj: myDrawables.getActiveObjs()) {
+		//	obj.animate();
+		//}
 	}
 	
 	//Returns the last int in the list

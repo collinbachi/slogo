@@ -1,4 +1,5 @@
 package syntax_tree;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,30 +13,39 @@ public class SyntaxTree {
 	private HashSet<String> mathSet = new HashSet<String>();
 	private HashSet<String> booleanSet = new HashSet<String>();
 	private ArrayList<String> inputCommands = new ArrayList<String>();
-	private ArrayList<ParserCommand> outputCommands = new ArrayList<ParserCommand>();
+	private ArrayList<postCommand> outputCommands = new ArrayList<postCommand>();
 	private HashMap<String, returnsValue> variableMap = new HashMap<String, returnsValue>();
-	private HashMap<String, returnsCommandList> commandListMap = new HashMap<String, returnsCommandList>();
+	private HashMap<String, ArrayList<String>> commandListMap = new HashMap<String, ArrayList<String>>();
 
 	private ParserClient myClient;
 
-	public SyntaxTree(){
+	public SyntaxTree() {
 		buildCommandSet();
 		buildMathSet();
 		buildBooleanSet();
 	}
-	
-	public void appendToInput(String input){
+
+	public void appendToInput(String input) {
 		inputCommands.add(input);
 	}
 
-	public ArrayList<ParserCommand> parseTokens(ParserClient client){
-		myClient = client;
-		TreeCommandFactory command = new TreeCommandFactory(commandSet, mathSet, booleanSet, inputCommands, variableMap, commandListMap);
-		outputCommands.addAll(command.getCommandList());
+	public ArrayList<postCommand> parseTokens(ParserClient parserClient) {
+		while (!inputCommands.isEmpty()) {
+			TreeCommandFactory command = new TreeCommandFactory(commandSet, mathSet, booleanSet, inputCommands,
+					variableMap, commandListMap, parserClient);
+			outputCommands.addAll(command.getCommandList());
+		}
+		Execute();
+		outputCommands.clear();
 		return outputCommands;
 	}
-	
-	
+
+	private void Execute() {
+		for (int i = 0; i < outputCommands.size(); i++) {
+			outputCommands.get(i).postToClient();
+		}
+	}
+
 	private void buildCommandSet() {
 
 		// Turtle Commands
@@ -63,6 +73,7 @@ public class SyntaxTree {
 		commandSet.add("HIDETURTLE");// Hide turtle
 		commandSet.add("HOME");
 		commandSet.add("CLEARSCREEN");// Clear screen
+		commandSet.add("TELL");// Clear screen
 
 	}
 
