@@ -117,6 +117,10 @@ public class DrawData extends ParseAndDrawDrawView {
 			move();
 			isDrawing = true;
 		}
+		else {
+			myOldX = myDestX;
+			myOldY = myDestY;
+		}
 		
 		if (Math.abs(myDestHeading - myObject.getRotate()) > .01) {
 			rotate();
@@ -125,7 +129,6 @@ public class DrawData extends ParseAndDrawDrawView {
 		
 		if (!penUp && readyToDraw) {
 			paint();
-			isDrawing = true;
 		}
 		
 		if (isActive) {
@@ -190,11 +193,13 @@ public class DrawData extends ParseAndDrawDrawView {
 	}
 
 	public void drawPen(Boolean state) {
-		penUp = state;
+		penUp = !state;
+		isDrawing = false;
 	}
 
 	public void drawShowing(Boolean state) {
 		myObject.setVisible(state);
+		isDrawing = false;
 	}
 
 	public void drawClear() {
@@ -220,6 +225,7 @@ public class DrawData extends ParseAndDrawDrawView {
 	
 	public void setPenColor(Color color) {
 		myPenColor = color;
+		isDrawing = false;
 	}
 	
 	public Boolean getIsDrawing() {

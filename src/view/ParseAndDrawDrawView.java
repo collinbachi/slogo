@@ -61,15 +61,16 @@ public class ParseAndDrawDrawView extends ConcreteView implements DrawView {
 		List<Integer> active = new ArrayList<>();
 		for (int i : myObjs.keySet()) {
 			myObjs.get(i).update();
-			if (myObjs.get(i).getIsDrawing()) {
+			if (!myObjs.get(i).getIsDrawing()) {
 				myDrawClient.drawingDone(i);
 			}
 			if (myObjs.get(i).getIsActive()) {
 				active.add(i);
 			}
 		}
-		
-		myParseClient.setActives(active);
+		if (active.size() > 0) {
+			myParseClient.setActives(active);
+		}
 	}
 	
 	public void initObject(String filename, double x, double y, double orientation) {
