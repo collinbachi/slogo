@@ -1,9 +1,21 @@
 package syntax_tree;
 
-public class PenUp extends commandState {
+import client.ParserClient;
+
+public class PenUp extends commandState implements postCommand{
 	
-	public PenUp(){
-		appendToCommandList(parserCommandFactory.getCommand("PENUP"));
+	private ParserClient parseClient;
+	
+	public PenUp(ParserClient parseClient){
+		super(parseClient);
+		this.parseClient = parseClient;
+	}
+
+	@Override
+	public void postToClient() {
+		// TODO Auto-generated method stub
+		parseClient.postCommand(parserCommandFactory.getCommand("PENUP"));
+		
 	}
 
 }

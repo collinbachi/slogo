@@ -1,9 +1,19 @@
 package syntax_tree;
 
-public class Showing extends commandState{
+import client.ParserClient;
+
+public class Showing extends commandState implements postCommand{
 	
-	public Showing(){
-		appendToCommandList(parserCommandFactory.getCommand("SHOWING?"));
+	private ParserClient parseClient;
+	public Showing(ParserClient parseClient){
+		super(parseClient);
+		this.parseClient = parseClient;
+	}
+	@Override
+	public void postToClient() {
+		// TODO Auto-generated method stub
+		parseClient.postCommand(parserCommandFactory.getCommand("SHOWING?"));
+		
 	}
 
 }

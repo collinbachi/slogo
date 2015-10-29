@@ -1,9 +1,20 @@
 package syntax_tree;
 
-public class ShowTurtle extends commandState{
+import client.ParserClient;
+
+public class ShowTurtle extends commandState implements postCommand{
 	
-	public ShowTurtle(){
-		appendToCommandList(parserCommandFactory.getCommand("SHOWTURTLE"));
+	private ParserClient parseClient;
+	
+	public ShowTurtle(ParserClient parseClient){
+		super(parseClient);
+		this.parserClient = parseClient;
+	}
+
+	@Override
+	public void postToClient() {
+		// TODO Auto-generated method stub
+		parseClient.postCommand(parserCommandFactory.getCommand("SHOWTURTLE"));
 	}
 
 }

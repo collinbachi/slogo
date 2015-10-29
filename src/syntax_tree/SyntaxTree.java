@@ -36,6 +36,7 @@ public class SyntaxTree {
 			outputCommands.addAll(command.getCommandList());
 		}
 		Execute();
+		outputCommands.clear();
 		return outputCommands;
 	}
 
